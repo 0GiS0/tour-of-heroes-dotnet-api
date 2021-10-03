@@ -22,13 +22,23 @@ namespace tour_of_heroes_api
 
 
         [Function(nameof(AddHero))]
-        public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
+        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("AddHero");
 
-            var heroes = _context.Heroes.ToList();
+            var hero = req.ReadFromJsonAsync<Hero>().Result;
+
+            if (hero == null)
+            {
+                return req.CreateResponse(HttpStatusCode.BadRequest);
+            }
+
+            _context.Heroes.Add(hero);
+            _context.SaveChanges();
 
             var response = req.CreateResponse(HttpStatusCode.OK);
+
+            await response.WriteAsJsonAsync(hero);
 
             return response;
         }

@@ -1,3 +1,33 @@
-GET https://tour-of-heroes-functions.azurewebsites.net/api/GetHeroes
+GET http://localhost:7071/api/GetHeroes  HTTP/1.1
 
-POST https://tour-of-heroes-functions.azurewebsites.net/api/AddHero
+###
+
+GET http://localhost:7071/api/GetHeroById?id=2  HTTP/1.1
+
+###
+
+POST http://localhost:7071/api/AddHero HTTP/1.1
+content-type: application/json
+
+{
+    "name": "gis",
+    "alterEgo": "Gisela",
+    "description": "test"
+}
+
+###
+
+PUT http://localhost:7071/api/UpdateHero?id=9 HTTP/1.1
+content-type: application/json
+
+{    
+    "id": 9,
+    "name": "Captain America",
+    "alterEgo": "Grant Rogers",
+    "description": "El personaje es generalmente representado como el álter ego de Steve Rogers, un joven frágil mejorado a la cima de la perfección humana por un suero experimental S.S.S. (Suero supersoldado) para ayudar a los esfuerzos inminentes del gobierno de Estados Unidos en la Segunda Guerra Mundial. Cerca del final de la guerra, queda atrapado en el hielo y sobrevive en animación suspendida hasta que es descongelado en el presente."
+}
+
+###
+
+DELETE http://localhost:7071/api/DeleteHero?id=1
+

@@ -3,24 +3,42 @@ using System.Net;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using tour_of_heroes_api.Models;
+using System.Web;
 
 namespace tour_of_heroes_api
 {
-    public static class DeleteHero
+    public class DeleteHero
     {
+        private readonly HeroContext _context;
+
+        public DeleteHero(HeroContext context)
+        {
+            _context = context;
+        }
+
         [Function("DeleteHero")]
-        public static HttpResponseData Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req,
+        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "delete")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("DeleteHero");
-            logger.LogInformation("C# HTTP trigger function processed a request.");
+            var id = int.Parse(HttpUtility.ParseQueryString(req.Url.Query).Get("id"));
 
-            var response = req.CreateResponse(HttpStatusCode.OK);
-            response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
+            logger.LogInformation($"Delete hero with id {id}");
 
-            response.WriteString("Welcome to Azure Functions!");
+            var hero = await _context.Heroes.FindAsync(id);
 
-            return response;
+            if (hero == null)
+            {
+                return req.CreateResponse(HttpStatusCode.NotFound);
+            }
+
+            _context.Heroes.Remove(hero);
+            await _context.SaveChangesAsync();
+
+            return req.CreateResponse(HttpStatusCode.NoContent);
         }
+
     }
 }
