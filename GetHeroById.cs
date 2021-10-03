@@ -1,38 +1,38 @@
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
-using tour_of_heroes_api.Models;
-using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
+using tour_of_heroes_api.Models;
+using System.Web;
 
 namespace tour_of_heroes_api
 {
-    public class GetHeroes
+    public class GetHeroById
     {
         private readonly HeroContext _context;
 
-        public GetHeroes(HeroContext context)
+        public GetHeroById(HeroContext context)
         {
             _context = context;
+
         }
 
-
-        [Function("GetHeroes")]
+        [Function("GetHeroById")]
         public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req, FunctionContext executionContext)
         {
-            var logger = executionContext.GetLogger("GetHeroes");
+            var logger = executionContext.GetLogger("GetHeroById");
 
-            var heroes = _context.Heroes.ToList();
+            var id = int.Parse(HttpUtility.ParseQueryString(req.Url.Query).Get("id"));
 
-            logger.LogInformation($"Returning {heroes.Count.ToString()} heroes");
+            logger.LogInformation($"Get hero by id {id}");
+
+            var hero = await _context.Heroes.FindAsync(id);
 
             var response = req.CreateResponse(HttpStatusCode.OK);
 
-            await response.WriteAsJsonAsync(heroes);
+            await response.WriteAsJsonAsync(hero);
 
             return response;
         }

@@ -1,0 +1,3 @@
+GET https://tour-of-heroes-functions.azurewebsites.net/api/GetHeroes
+
+POST https://tour-of-heroes-functions.azurewebsites.net/api/AddHero
