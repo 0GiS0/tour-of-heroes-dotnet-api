@@ -23,7 +23,8 @@
                 "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
             },
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "AZURE_STORAGE_CONNECTION_STRING": "DefaultEndpointsProtocol=https;AccountName=picheroes;AccountKey=DVckbp9vzj2VMLXox+v/DnKNJprWnpB3Z1VE9HvFnvTg7jZ25pB1QmicvIRMYmmmeM3c8qL671hTBlV2FKhodg==;EndpointSuffix=core.windows.net"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
