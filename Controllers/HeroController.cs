@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
+using Azure.Storage.Queues;
+using Azure.Storage.Queues.Models;
 using Azure.Storage.Sas;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tour_of_heroes_api.Models;
 using tour_of_heroes_api.Modesl;
+using System.Text.Json;
 
 namespace tour_of_heroes_api.Controllers
 {
@@ -53,12 +55,40 @@ namespace tour_of_heroes_api.Controllers
             {
                 return BadRequest();
             }
+            var oldHero = await _context.Heroes.FindAsync(id);
+            _context.Entry(oldHero).State = EntityState.Detached;
+
 
             _context.Entry(hero).State = EntityState.Modified;
 
             try
             {
                 await _context.SaveChangesAsync();
+
+                /*********** Background processs (We have to rename the image) *************/
+                if (hero.AlterEgo != oldHero.AlterEgo)
+                {
+                    // Get the connection string from app settings
+                    string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
+
+                    // Instantiate a QueueClient which will be used to create and manipulate the queue
+                    var queueClient = new QueueClient(connectionString, "alteregos");
+
+                    // Create a queue
+                    await queueClient.CreateIfNotExistsAsync();
+
+                    // Create a dynamic object to hold the message
+                    var message = new
+                    {
+                        oldName = oldHero.AlterEgo,
+                        newName = hero.AlterEgo
+                    };
+
+                    // Send the message
+                    await queueClient.SendMessageAsync(JsonSerializer.Serialize(message).ToString());
+
+                }
+                /*********** End Background processs *************/
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -120,7 +150,7 @@ namespace tour_of_heroes_api.Controllers
 
             //Get image from Azure Storage
             string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
-            
+
             // Create a BlobServiceClient object which will be used to create a container client
             var blobServiceClient = new BlobServiceClient(connectionString);
 
@@ -143,7 +173,7 @@ namespace tour_of_heroes_api.Controllers
         {
             //Get image from Azure Storage
             string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
-            
+
             // Create a BlobServiceClient object which will be used to create a container client
             var blobServiceClient = new BlobServiceClient(connectionString);
 

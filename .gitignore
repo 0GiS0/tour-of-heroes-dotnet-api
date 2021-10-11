@@ -455,3 +455,4 @@ $RECYCLE.BIN/
 
 ## app settings
 appsettings.Development.json
+.vscode/launch.json
