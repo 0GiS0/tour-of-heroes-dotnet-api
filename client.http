@@ -1,0 +1,64 @@
+GET https://localhost:5001/api/hero HTTP/1.1
+
+###
+POST https://localhost:5001/api/hero HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Wolverine",
+    "alterEgo": "James Logan",
+    "description": "Es un mutante que posee sentidos afinados a los animales, capacidades físicas mejoradas, poderosa capacidad de regeneración conocida como un factor de curación, y tres garras retráctiles en cada mano."
+}
+
+###
+POST https://localhost:5001/api/hero HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Catwoman",
+    "alterEgo": "Selina Kyle",
+    "description": "Catwoman es una ladrona de Gotham City que normalmente usa un traje ajustado de una sola pieza y usa un látigo como arma. Originalmente fue caracterizada como una supervillana y adversaria de Batman, pero desde la década de 1990 ha aparecido en una serie que la presenta como una antiheroína, a menudo haciendo cosas incorrectas por las razones correctas."
+}
+
+
+###
+POST https://localhost:5001/api/hero HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Batman",
+    "alterEgo": "Bruce Wayne",
+    "description": "Un multimillonario magnate empresarial y filántropo dueño de Empresas Wayne en Gotham City. Después de presenciar el asesinato de sus padres, el Dr. Thomas Wayne y Martha Wayne en un violento y fallido asalto cuando era niño, juró venganza contra los criminales, un juramento moderado por el sentido de la justicia."
+}
+
+###
+POST https://localhost:5001/api/hero HTTP/1.1
+content-type: application/json
+
+{    
+    "name": "Superman",
+    "alterEgo": "Clark Kent",
+    "description": "Nació en el planeta Krypton y recibió el nombre de Kal-El al nacer. Cuando era bebé, sus padres, el científico Jor-El, y su esposa Lara Lor-Van, lo enviaron a la Tierra en una pequeña nave espacial momentos antes de que Krypton fuera destruido en un cataclismo natural. Su nave aterrizó en el campo estadounidense, cerca de la ciudad ficticia de Smallville. Fue encontrado y adoptado por los agricultores Jonathan y Martha Kent, quienes lo llamaron Clark Kent. Clark desarrolló varias habilidades sobrehumanas, como una fuerza increíble y una piel impermeable."
+}
+
+###
+POST https://localhost:5001/api/hero HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Venom",
+    "alterEgo": "Eddie Brock",
+    "description": "Es un antiheroe y supervillano que aparece en los cómics publicados por la editorial estadounidense Marvel Comics. El personaje es un extraterrestre sensible simbionte con una forma amorfa, semi-líquido, que sobrevive mediante la unión con un huésped, por lo general humano. Esta forma de vida dual recibe poderes mejorados y generalmente se refiere a sí misma como «Venom»."
+}
+
+###
+POST https://localhost:5001/api/hero HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Spider-Man",
+    "alterEgo": "Peter Parker",
+    "description": "un joven huérfano neoyorquino que adquiere superpoderes después de ser mordido por una araña radiactiva,15​ y cuya ideología como héroe se ve reflejada primordialmente en la expresión «un gran poder conlleva una gran responsabilidad».20​21​ Suele ser asociado con una personalidad bromista, amable, inventiva y optimista, lo que le ha llevado a ser catalogado como el «vecino amigable» de cualquiera lo cual, aunado a sus vivencias caracterizadas por los problemas cotidianos."
+}
+
+
