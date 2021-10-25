@@ -11,6 +11,10 @@ using Microsoft.EntityFrameworkCore;
 using tour_of_heroes_api.Models;
 using tour_of_heroes_api.Modesl;
 using System.Text.Json;
+using System.Security.Cryptography;
+using System.Web;
+using System.Globalization;
+using System.Text;
 
 namespace tour_of_heroes_api.Controllers
 {
@@ -199,6 +203,23 @@ namespace tour_of_heroes_api.Controllers
 
             //return image
             return Ok($"{blobServiceClient.Uri}{sasUri.Query.ToString()}");
+        }
+
+        [HttpGet("eventhub/sas")]
+        public string getSas()
+        {
+            string resourceUri = Environment.GetEnvironmentVariable("EVENTHUB_ENDPOINT");
+            string keyName = Environment.GetEnvironmentVariable("EVENHUB_POLICY_NAME");
+            string key = Environment.GetEnvironmentVariable("EVENTHUB_PRIMARY_KEY");
+
+            TimeSpan sinceEpoch = DateTime.UtcNow - new DateTime(1970, 1, 1);
+            var week = 60 * 60 * 24 * 7;
+            var expiry = Convert.ToString((int)sinceEpoch.TotalSeconds + week);
+            string stringToSign = HttpUtility.UrlEncode(resourceUri) + "\n" + expiry;
+            HMACSHA256 hmac = new HMACSHA256(Encoding.UTF8.GetBytes(key));
+            var signature = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(stringToSign)));
+            var sasToken = String.Format(CultureInfo.InvariantCulture, "SharedAccessSignature sr={0}&sig={1}&se={2}&skn={3}", HttpUtility.UrlEncode(resourceUri), HttpUtility.UrlEncode(signature), expiry, keyName);
+            return sasToken;
         }
     }
 }
