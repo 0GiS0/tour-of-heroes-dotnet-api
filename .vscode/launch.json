@@ -19,7 +19,7 @@
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "AZURE_STORAGE_CONNECTION_STRING": "<YOUR_AZURE_STORAGE_CONNECTION_STRING>"
+                "AZURE_STORAGE_CONNECTION_STRING": "UseDevelopmentStorage=true"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
