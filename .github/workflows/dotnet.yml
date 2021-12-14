@@ -41,4 +41,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Generate docker image
-      run: docker build -t $GITHUB_REPOSITORY:$GITHUB_SHA .
+      run: docker build -t api:$GITHUB_SHA .
