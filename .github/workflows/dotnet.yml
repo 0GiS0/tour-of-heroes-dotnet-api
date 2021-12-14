@@ -49,7 +49,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: docker.pkg.github.com/${{ env.REPO }}/${{ env.IMAGE_NAME }}:latest
+        tags: docker.pkg.github.com/0gis0/tour-of-heroes-dotnet-api/${{ env.IMAGE_NAME }}:latest
     
       
     
