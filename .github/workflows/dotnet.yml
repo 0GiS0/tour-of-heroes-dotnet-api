@@ -31,3 +31,10 @@ jobs:
     steps:
     - name: Say hello
       run: echo 'Hello you'
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Generate docker image
+      run: docker build -t $GITHUB_REPOSITORY:$GITHUB_SHA .
