@@ -42,9 +42,7 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-    #- uses: actions/checkout@v2
-    #- name: Generate docker image
-    #  run: docker build -t api:$GITHUB_SHA .
+    - uses: actions/checkout@v2    
     - uses: docker/build-push-action@v2
       with:
         context: .
