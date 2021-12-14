@@ -29,6 +29,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal
 
   deploy:
+    needs: [build]
     runs-on: ubuntu-latest
     
     steps:
