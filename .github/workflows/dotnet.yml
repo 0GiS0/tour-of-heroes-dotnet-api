@@ -17,6 +17,13 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
+  lemon:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Saludo
+      run: |
+        echo Hola
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
