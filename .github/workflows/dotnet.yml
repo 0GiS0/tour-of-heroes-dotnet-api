@@ -13,7 +13,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -30,7 +30,7 @@ jobs:
 
   deploy:
     needs: [build]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     
     steps:
     - name: Say hello
