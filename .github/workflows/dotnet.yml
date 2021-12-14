@@ -25,7 +25,8 @@ jobs:
       run: dotnet test --no-build --verbosity normal
   
   lemon:
-    runs-on: windows-latest  
+    needs: [build]
+    runs-on: ubuntu-latest
     steps:
     - name: Saludo
       run: |
