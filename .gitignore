@@ -452,3 +452,7 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+terraform/.terraform.lock.hcl
+terraform/.terraform.tfstate.lock.info
+terraform/terraform.tfstate
+terraform/.terraform/providers/registry.terraform.io/hashicorp/azurerm/2.89.0/darwin_arm64/terraform-provider-azurerm_v2.89.0_x5
