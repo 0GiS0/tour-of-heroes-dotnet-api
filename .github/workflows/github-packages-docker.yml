@@ -21,4 +21,4 @@ jobs:
         with:         
           context: .         
           push: true
-          tag: docker.pkg.github.com/0gis0/tour-of-heroes-dotnet-api/tour-of-heroes-api:latest
+          tags: docker.pkg.github.com/0gis0/tour-of-heroes-dotnet-api/tour-of-heroes-api:latest
