@@ -19,12 +19,10 @@ resource "azurerm_app_service_plan" "plan" {
 }
 
 resource "azurerm_app_service" "web" {
-  name = "tour-of-heroes-web-api"
+  name = "tour-of-heroes-webapi"
   location = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
-  app_service_plan_id = azurerm_app_service_plan.plan.id
-
-  
+  app_service_plan_id = azurerm_app_service_plan.plan.id  
 
 }
