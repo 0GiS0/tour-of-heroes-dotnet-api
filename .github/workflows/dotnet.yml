@@ -26,10 +26,10 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
   
-  lemon:
-    #needs: [build]
-    runs-on: self-hosted
-    steps:
-    - name: Saludo
-      run: |
-        echo Hola
+  # lemon:
+  #   #needs: [build]
+  #   runs-on: self-hosted
+  #   steps:
+  #   - name: Saludo
+  #     run: |
+  #       echo Hola
