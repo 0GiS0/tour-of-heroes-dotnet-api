@@ -1,4 +1,4 @@
-name: Deploy on Azure demo
+name: Artifacts demo
 
 on:
   push:
@@ -34,6 +34,7 @@ jobs:
           path: "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp"
   deploy:
     runs-on: ubuntu-latest
+    needs: build
     steps:      
       - name: "Download artifact"
         uses: actions/download-artifact@v2.1.0

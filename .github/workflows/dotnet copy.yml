@@ -1,0 +1,15 @@
+name: Docker image demo
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:   
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Generate docker image
+        run: docker build -t tour-of-heroes-api:$GITHUB_SHA .
