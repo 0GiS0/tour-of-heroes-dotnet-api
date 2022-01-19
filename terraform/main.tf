@@ -1,3 +1,10 @@
+# Terraform state in Azure Storage
+terraform {
+  backend "azurerm" {
+    key = "tour-of-heroes-tf-state"
+  }
+}
+
 # Azure provider
 provider "azurerm" {
   features {}
