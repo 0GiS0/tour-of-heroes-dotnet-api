@@ -19,18 +19,6 @@ resource "azurerm_resource_group" "rg" {
   location = "North Europe"
 }
 
-# Azure App Service Plan
-resource "azurerm_app_service_plan" "plan" {
-  name                = "tour-of-heroes-plan"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-
-  sku {
-    tier = "Standard"
-    size = "S1"
-  }
-}
-
 
 # Create a Azure SQL Server 
 resource "azurerm_sql_server" "sqlserver" {
@@ -61,6 +49,18 @@ resource "azurerm_sql_database" "sqldatabase" {
   edition             = "Basic"
 }
 
+# Azure App Service Plan
+resource "azurerm_app_service_plan" "plan" {
+  name                = "tour-of-heroes-plan"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  sku {
+    tier = "Standard"
+    size = "S1"
+  }
+}
+
 # Create Web App
 resource "azurerm_app_service" "web" {
   name                = "tour-of-heroes-webapi"
@@ -68,6 +68,23 @@ resource "azurerm_app_service" "web" {
   resource_group_name = azurerm_resource_group.rg.name
 
   app_service_plan_id = azurerm_app_service_plan.plan.id
+
+  # Connection Strings
+  connection_string {
+    name  = "DefaultConnection"
+    value = "Server=tcp:${azurerm_sql_server.sqlserver.name}.database.windows.net,1433;Initial Catalog=${azurerm_sql_database.sqldatabase.name};Persist Security Info=False;User ID=${var.db_user};Password=${var.db_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+    type  = "SQLAzure"
+  }
+}
+
+# Create Web App slot
+resource "azurerm_app_service_slot" "web" {
+  name                = "staging"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  app_service_plan_id = azurerm_app_service_plan.plan.id
+  app_service_name    = azurerm_app_service.web.name
 
   # Connection Strings
   connection_string {
