@@ -1,0 +1,25 @@
+name: GitHub Packages demo
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:   
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login GitHub Packages
+        uses: docker/login-action@v1
+        with:
+          registry: docker.pkg.github.com
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v2
+        with:         
+          context: .         
+          push: true
+          tag: docker.pkg.github.com/0gis0/tour-of-heroes-dotnet-api/tour-of-heroes-api:$GITHUB_SHA
+
