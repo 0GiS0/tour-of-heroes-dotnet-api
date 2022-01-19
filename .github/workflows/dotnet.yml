@@ -32,7 +32,7 @@ jobs:
 
         #Deploy web app
       - name: Publish
-        run: dotnet publish --no-build --configuration Release ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp    
+        run: dotnet publish --configuration Release -o ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp    
       - name: "Run Azure webapp deploy action using publish profile credentials"
         uses: azure/webapps-deploy@v2
         with:
