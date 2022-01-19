@@ -21,3 +21,7 @@ jobs:
         run: dotnet build --no-restore
       - name: Test
         run: dotnet test --no-build --verbosity normal
+  lemon:
+    runs-on: self-hosted
+    steps:
+    - run: Hello from self-hosted
