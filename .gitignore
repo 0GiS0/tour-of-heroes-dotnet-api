@@ -458,3 +458,4 @@ terraform/terraform.tfstate
 terraform/.terraform/providers/registry.terraform.io/hashicorp/azurerm/2.89.0/darwin_arm64/terraform-provider-azurerm_v2.89.0_x5
 .github/workflows/dotnet.yml
 terraform/.terraform/providers/registry.terraform.io/hashicorp/azurerm/2.92.0/darwin_arm64/terraform-provider-azurerm_v2.92.0_x5
+terraform/terraform.tfstate.backup
