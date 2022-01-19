@@ -14,8 +14,8 @@ name: Snyk Infrastructure as Code
 
 on:
   push:
-    paths:
-      - "terraform/*"
+    # paths:
+    #   - "terraform/*"
     branches: 
     - main
    
