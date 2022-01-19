@@ -1,4 +1,4 @@
-name: CI
+name: Self-hosted demo
 
 on:
   push:
@@ -24,4 +24,4 @@ jobs:
   lemon:
     runs-on: self-hosted
     steps:
-    - run: Hello from self-hosted
+    - run: echo 'Hello from self-hosted'
