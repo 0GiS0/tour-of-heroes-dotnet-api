@@ -12,16 +12,7 @@ env:
 
 jobs:
   iac:
-    runs-on: ubuntu-latest
-    env:
-      - name: ARM_SUBSCRIPTION_ID
-        value: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      - name: ARM_CLIENT_ID
-        value: ${{ secrets.ARM_CLIENT_ID }}
-      - name: ARM_CLIENT_SECRET
-        value: ${{ secrets.ARM_CLIENT_SECRET }}
-      - name: ARM_TENANT_ID
-        value: ${{ secrets.ARM_TENANT_ID }}
+    runs-on: ubuntu-latest    
     steps:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -34,6 +25,11 @@ jobs:
         run: terraform plan -out=tfplan
       - name: Terraform apply
         run: terraform apply tfplan"
+        env:
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
   build:
     needs: iac
     runs-on: ubuntu-latest
