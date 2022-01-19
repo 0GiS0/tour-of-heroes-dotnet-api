@@ -25,11 +25,11 @@ jobs:
       - name: Terraform plan
         run: terraform plan
         working-directory: terraform
-        env:
-          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        # env:
+        #   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        #   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        #   ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        #   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       - name: Terraform apply
         run: terraform apply tfplan"
         working-directory: terraform
