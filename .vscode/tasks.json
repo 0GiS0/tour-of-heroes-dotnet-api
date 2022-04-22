@@ -2,12 +2,6 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"type": "func",
-			"command": "extensions install",
-			"problemMatcher": [],
-			"label": "func: extensions install"
-		},
-		{
 			"label": "clean (functions)",
 			"command": "dotnet",
 			"args": [
@@ -68,15 +62,6 @@
 				"cwd": "${workspaceFolder}/bin/Debug/net5.0"
 			},
 			"command": "host start",
-			"isBackground": true,
-			"problemMatcher": "$func-dotnet-watch"
-		},
-		{
-			"type": "func",
-			"options": {
-				"cwd": "${workspaceFolder}/bin/Debug/net5.0"
-			},
-			"command": "host start --dotnet-isolated-debug",
 			"isBackground": true,
 			"problemMatcher": "$func-dotnet-watch"
 		}
