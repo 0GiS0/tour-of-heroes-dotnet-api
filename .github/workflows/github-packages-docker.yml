@@ -26,7 +26,7 @@ jobs:
       - name: Short the sha to 7 characters only
         id: vars
         run: echo ::set-output name=tag::$(echo ${GITHUB_SHA::7})
-      - uses: docker/build-push-action@v2
+      - uses: docker/build-push-action@v3
         with:         
           context: .
           platforms: linux/amd64,linux/arm64
