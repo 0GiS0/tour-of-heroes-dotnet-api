@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using tour_of_heroes_api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +34,8 @@ namespace tour_of_heroes_api
 
             // services.AddDbContext<HeroContext>(opt => opt.UseInMemoryDatabase("Heroes"));
             services.AddDbContext<HeroContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDaprClient();
 
             services.AddSwaggerGen(c =>
             {

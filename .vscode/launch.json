@@ -18,8 +18,7 @@
                 "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
             },
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development",
-                "ASPNETCORE_URLS": "http://localhost:5010"
+                "ASPNETCORE_ENVIRONMENT": "Development"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
@@ -31,13 +30,25 @@
             "request": "attach"
         },
         {
-            "name": "Docker .NET Core Launch",
-            "type": "docker",
+            "name": ".NET Core Launch (web) with Dapr",
+            "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "docker-run: debug",
-            "netCore": {
-                "appProject": "${workspaceFolder}/tour-of-heroes-api.csproj"
-            }
+            "preLaunchTask": "dapr-debug",
+            "program": "${workspaceFolder}/bin/Debug/net6.0/tour-of-heroes-api.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+            "postDebugTask": "daprd-down"
         }
     ]
 }

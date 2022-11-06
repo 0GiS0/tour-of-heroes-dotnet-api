@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tour_of_heroes_api.Models;
-using tour_of_heroes_api.Modesl;
+using Dapr.Client;
+using System.Collections.Generic;
 
 namespace tour_of_heroes_api.Controllers
 {
@@ -15,17 +13,31 @@ namespace tour_of_heroes_api.Controllers
     public class HeroController : ControllerBase
     {
         private readonly HeroContext _context;
+        private DaprClient _client;
+        string DAPR_STORE_NAME = "statestore";
 
-        public HeroController(HeroContext context)
+        public HeroController(HeroContext context, DaprClient client)
         {
             _context = context;
+            _client = client;
         }
 
         // GET: api/Hero
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Hero>>> GetHeroes()
+        public async Task<IEnumerable<Hero>> GetHeroes()
         {
-            return await _context.Heroes.ToListAsync();
+
+            // return await _context.Heroes.ToListAsync();           
+
+            var heroes = await _client.GetStateAsync<List<Hero>>(DAPR_STORE_NAME, "heroes");
+
+            if (heroes == null)
+            {
+
+                heroes = await UpdateCache();
+            }
+
+            return heroes;
         }
 
         // GET: api/Hero/5
@@ -78,8 +90,12 @@ namespace tour_of_heroes_api.Controllers
         [HttpPost]
         public async Task<ActionResult<Hero>> PostHero(Hero hero)
         {
-            _context.Heroes.Add(hero);
-            await _context.SaveChangesAsync();
+            // _context.Heroes.Add(hero);
+            // await _context.SaveChangesAsync();
+
+            using var client = new DaprClientBuilder().Build();
+
+            await client.SaveStateAsync(DAPR_STORE_NAME, "heroes", hero);
 
             return CreatedAtAction(nameof(GetHero), new { id = hero.Id }, hero);
         }
@@ -103,6 +119,15 @@ namespace tour_of_heroes_api.Controllers
         private bool HeroExists(int id)
         {
             return _context.Heroes.Any(e => e.Id == id);
+        }
+
+        private async Task<List<Hero>> UpdateCache()
+        {
+            var heroes = await _context.Heroes.ToListAsync();
+
+            await _client.SaveStateAsync<List<Hero>>(DAPR_STORE_NAME, "heroes", heroes);
+
+            return heroes;
         }
     }
 }

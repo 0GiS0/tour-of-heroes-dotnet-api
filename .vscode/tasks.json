@@ -32,9 +32,8 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/tour-of-heroes-api.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "--project",
+                "${workspaceFolder}/tour-of-heroes-api.csproj"
             ],
             "problemMatcher": "$msCompile"
         },
@@ -120,6 +119,18 @@
             "netCore": {
                 "appProject": "${workspaceFolder}/tour-of-heroes-api.csproj"
             }
+        },
+        {
+            "appId": "app",
+            "appPort": 5001,
+            "label": "dapr-debug",
+            "type": "dapr",
+            "dependsOn": "build"
+        },
+        {
+            "appId": "app",
+            "label": "daprd-down",
+            "type": "daprd-down"
         }
     ]
 }
