@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/net5.0/tour-of-heroes-api.dll",
+            "program": "${workspaceFolder}/bin/Debug/net6.0/tour-of-heroes-api.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
@@ -19,8 +19,8 @@
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "ASPNETCORE_URLS": "http://localhost:5010"                
-            },            
+                "ASPNETCORE_URLS": "http://localhost:5010"
+            },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
             }
