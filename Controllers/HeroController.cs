@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using tour_of_heroes_api.Models;
 using Dapr.Client;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
+using System.Net.Http;
 
 namespace tour_of_heroes_api.Controllers
 {
@@ -13,13 +16,13 @@ namespace tour_of_heroes_api.Controllers
     public class HeroController : ControllerBase
     {
         private readonly HeroContext _context;
-        private DaprClient _client;
-        string DAPR_STORE_NAME = "statestore";
+        private DaprClient _daprClient;
+        string DAPR_STORE_NAME = "statestore";        
 
         public HeroController(HeroContext context, DaprClient client)
         {
             _context = context;
-            _client = client;
+            _daprClient = client;            
         }
 
         // GET: api/Hero
@@ -29,7 +32,7 @@ namespace tour_of_heroes_api.Controllers
 
             // return await _context.Heroes.ToListAsync();           
 
-            var heroes = await _client.GetStateAsync<List<Hero>>(DAPR_STORE_NAME, "heroes");
+            var heroes = await _daprClient.GetStateAsync<List<Hero>>(DAPR_STORE_NAME, "heroes");
 
             if (heroes == null)
             {
@@ -125,9 +128,39 @@ namespace tour_of_heroes_api.Controllers
         {
             var heroes = await _context.Heroes.ToListAsync();
 
-            await _client.SaveStateAsync<List<Hero>>(DAPR_STORE_NAME, "heroes", heroes);
+            await _daprClient.SaveStateAsync<List<Hero>>(DAPR_STORE_NAME, "heroes", heroes);
 
             return heroes;
+        }
+
+        // GET: api/hero/villain/{heroName}
+        [HttpGet("villain/{heroName}")]
+        public async Task<Hero> GetVillain(string heroName)
+        {
+            Hero hero = null;
+
+            //https://learn.microsoft.com/es-es/dotnet/architecture/dapr-for-net-developers/service-invocation
+
+            try
+            {
+                var httpClient = DaprClient.CreateInvokeHttpClient(appId: "tour-of-villains-api", daprEndpoint: "http://localhost:3501");
+
+                var response = await httpClient.GetAsync("/villain");
+                var json = await response.Content.ReadAsStringAsync();
+
+                hero = JsonConvert.DeserializeObject<Hero>(json);
+
+                // hero = await _daprClient.InvokeMethodAsync<Hero>(HttpMethod.Get, "tour-of-villains-api", "villain");
+
+
+            }
+            catch (InvocationException ex)
+            {
+                throw;
+            }
+
+
+            return hero;
         }
     }
 }

@@ -1,1 +1,1 @@
-dapr run --app-id tourofheroes-api --app-port 5010 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run
+dapr run --app-id tour-of-heroes-api --app-port 5222 --dapr-http-port 3601 --dapr-grpc-port 60001 dotnet run

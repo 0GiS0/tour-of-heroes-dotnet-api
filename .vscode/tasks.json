@@ -65,70 +65,16 @@
             "dependsOn": "clean"
         },
         {
-            "type": "docker-build",
-            "label": "docker-build: debug",
-            "dependsOn": [
-                "build"
-            ],
-            "dockerBuild": {
-                "tag": "tourofheroesdotnetapi:dev",
-                "target": "base",
-                "dockerfile": "${workspaceFolder}/Dockerfile",
-                "context": "${workspaceFolder}",
-                "pull": true
-            },
-            "netCore": {
-                "appProject": "${workspaceFolder}/tour-of-heroes-api.csproj"
-            }
-        },
-        {
-            "type": "docker-build",
-            "label": "docker-build: release",
-            "dependsOn": [
-                "build"
-            ],
-            "dockerBuild": {
-                "tag": "tourofheroesdotnetapi:latest",
-                "dockerfile": "${workspaceFolder}/Dockerfile",
-                "context": "${workspaceFolder}",
-                "pull": true
-            },
-            "netCore": {
-                "appProject": "${workspaceFolder}/tour-of-heroes-api.csproj"
-            }
-        },
-        {
-            "type": "docker-run",
-            "label": "docker-run: debug",
-            "dependsOn": [
-                "docker-build: debug"
-            ],
-            "dockerRun": {},
-            "netCore": {
-                "appProject": "${workspaceFolder}/tour-of-heroes-api.csproj",
-                "enableDebugging": true
-            }
-        },
-        {
-            "type": "docker-run",
-            "label": "docker-run: release",
-            "dependsOn": [
-                "docker-build: release"
-            ],
-            "dockerRun": {},
-            "netCore": {
-                "appProject": "${workspaceFolder}/tour-of-heroes-api.csproj"
-            }
-        },
-        {
-            "appId": "app",
-            "appPort": 5001,
+            "appId": "tour-of-heroes-api",
+            "appPort": 5222,
             "label": "dapr-debug",
             "type": "dapr",
-            "dependsOn": "build"
+            "dependsOn": "build",
+            "httpPort": 3502,
+            "grpcPort": 50002
         },
         {
-            "appId": "app",
+            "appId": "tour-of-heroes-api",
             "label": "daprd-down",
             "type": "daprd-down"
         }
