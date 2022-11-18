@@ -65,6 +65,7 @@
             "dependsOn": "clean"
         },
         {
+             //https://docs.dapr.io/developing-applications/ides/vscode/vscode-how-to-debug-multiple-dapr-apps/#daprd-parameter-table
             "appId": "tour-of-heroes-api",
             "appPort": 5222,
             "label": "dapr-debug",

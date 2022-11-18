@@ -7,7 +7,6 @@ using Dapr.Client;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
-using System.Net.Http;
 
 namespace tour_of_heroes_api.Controllers
 {
@@ -17,28 +16,45 @@ namespace tour_of_heroes_api.Controllers
     {
         private readonly HeroContext _context;
         private DaprClient _daprClient;
-        string DAPR_STORE_NAME = "statestore";        
+        const string DAPR_STORE_NAME = "statestore";
 
-        public HeroController(HeroContext context, DaprClient client)
+        ILogger<HeroController> _logger;
+
+        public HeroController(
+            HeroContext context,
+            DaprClient client,
+            ILogger<HeroController> logger
+        )
         {
             _context = context;
-            _daprClient = client;            
+            _daprClient = client;
+            _logger = logger;
         }
 
         // GET: api/Hero
         [HttpGet]
         public async Task<IEnumerable<Hero>> GetHeroes()
         {
+            // return await _context.Heroes.ToListAsync();
 
-            // return await _context.Heroes.ToListAsync();           
+            _logger.LogInformation($"Getting heroes...");
 
             var heroes = await _daprClient.GetStateAsync<List<Hero>>(DAPR_STORE_NAME, "heroes");
 
             if (heroes == null)
             {
-
+                _logger.LogInformation($"Not heroes in cache. Updating...");
                 heroes = await UpdateCache();
             }
+
+            return heroes;
+        }
+
+        private async Task<List<Hero>> UpdateCache()
+        {
+            var heroes = await _context.Heroes.ToListAsync();
+
+            await _daprClient.SaveStateAsync<List<Hero>>(DAPR_STORE_NAME, "heroes", heroes);
 
             return heroes;
         }
@@ -124,43 +140,38 @@ namespace tour_of_heroes_api.Controllers
             return _context.Heroes.Any(e => e.Id == id);
         }
 
-        private async Task<List<Hero>> UpdateCache()
-        {
-            var heroes = await _context.Heroes.ToListAsync();
-
-            await _daprClient.SaveStateAsync<List<Hero>>(DAPR_STORE_NAME, "heroes", heroes);
-
-            return heroes;
-        }
+        //Service-to-service invocation
 
         // GET: api/hero/villain/{heroName}
         [HttpGet("villain/{heroName}")]
-        public async Task<Hero> GetVillain(string heroName)
+        public async Task<Villain> GetVillain(string heroName)
         {
-            Hero hero = null;
+            _logger.LogInformation($"Finding the villain for {heroName}...");
+
+            Villain villain = null;
 
             //https://learn.microsoft.com/es-es/dotnet/architecture/dapr-for-net-developers/service-invocation
 
             try
             {
-                var httpClient = DaprClient.CreateInvokeHttpClient(appId: "tour-of-villains-api", daprEndpoint: "http://localhost:3501");
+                var httpClient = DaprClient.CreateInvokeHttpClient(
+                    appId: "tour-of-villains-api",
+                    daprEndpoint: "http://localhost:3501"
+                );
 
                 var response = await httpClient.GetAsync("/villain");
                 var json = await response.Content.ReadAsStringAsync();
 
-                hero = JsonConvert.DeserializeObject<Hero>(json);
+                villain = JsonConvert.DeserializeObject<Villain>(json);
 
                 // hero = await _daprClient.InvokeMethodAsync<Hero>(HttpMethod.Get, "tour-of-villains-api", "villain");
-
-
             }
             catch (InvocationException ex)
             {
                 throw;
             }
 
-
-            return hero;
+            return villain;
         }
     }
 }
