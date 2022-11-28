@@ -11,6 +11,7 @@ namespace tour_of_heroes_api
     public class Startup
     {
         readonly string CorsPolicy = "CorsPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -21,25 +22,31 @@ namespace tour_of_heroes_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddCors(options =>
             {
-                options.AddPolicy(CorsPolicy,
-                    builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
+                options.AddPolicy(
+                    CorsPolicy,
+                    builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+                );
             });
 
-            services.AddControllers();
+            services
+                .AddControllers()
+                .AddJsonOptions(o => o.JsonSerializerOptions.PropertyNamingPolicy = null);
 
             // services.AddDbContext<HeroContext>(opt => opt.UseInMemoryDatabase("Heroes"));
-            services.AddDbContext<HeroContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<HeroContext>(
+                opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+            );
 
             services.AddDaprClient();
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "tour_of_heroes_api", Version = "v1" });
+                c.SwaggerDoc(
+                    "v1",
+                    new OpenApiInfo { Title = "tour_of_heroes_api", Version = "v1" }
+                );
             });
         }
 
@@ -50,11 +57,13 @@ namespace tour_of_heroes_api
             // {
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "tour_of_heroes_api v1"));
+            app.UseSwaggerUI(
+                c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "tour_of_heroes_api v1")
+            );
             // }
 
-            app.UseHttpLogging();            
-            
+            app.UseHttpLogging();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();

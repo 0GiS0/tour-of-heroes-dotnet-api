@@ -72,7 +72,10 @@
             "type": "dapr",
             "dependsOn": "build",
             "httpPort": 3502,
-            "grpcPort": 50002
+            "grpcPort": 50002,
+            "config": "./config-dapr/config.yaml",
+            "logLevel": "debug",
+            "args": ["--enable-api-logging"]
         },
         {
             "appId": "tour-of-heroes-api",

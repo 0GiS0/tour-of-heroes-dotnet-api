@@ -5,8 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using tour_of_heroes_api.Models;
 using Dapr.Client;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
+using System.Threading;
+using System.Net.Http;
 
 namespace tour_of_heroes_api.Controllers
 {
@@ -109,12 +110,8 @@ namespace tour_of_heroes_api.Controllers
         [HttpPost]
         public async Task<ActionResult<Hero>> PostHero(Hero hero)
         {
-            // _context.Heroes.Add(hero);
-            // await _context.SaveChangesAsync();
-
-            using var client = new DaprClientBuilder().Build();
-
-            await client.SaveStateAsync(DAPR_STORE_NAME, "heroes", hero);
+            _context.Heroes.Add(hero);
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetHero), new { id = hero.Id }, hero);
         }
@@ -150,25 +147,19 @@ namespace tour_of_heroes_api.Controllers
 
             Villain villain = null;
 
-            //https://learn.microsoft.com/es-es/dotnet/architecture/dapr-for-net-developers/service-invocation
-
             try
             {
-                var httpClient = DaprClient.CreateInvokeHttpClient(
-                    appId: "tour-of-villains-api",
-                    daprEndpoint: "http://localhost:3501"
+                var result = _daprClient.CreateInvokeMethodRequest(
+                    HttpMethod.Get,
+                    "tour-of-villains-api",
+                    "/villain/" + heroName
                 );
-
-                var response = await httpClient.GetAsync("/villain");
-                var json = await response.Content.ReadAsStringAsync();
-
-                villain = JsonConvert.DeserializeObject<Villain>(json);
-
-                // hero = await _daprClient.InvokeMethodAsync<Hero>(HttpMethod.Get, "tour-of-villains-api", "villain");
+                
+                villain = await _daprClient.InvokeMethodAsync<Villain>(result);                
             }
             catch (InvocationException ex)
             {
-                throw;
+                _logger.LogError(ex.Message);
             }
 
             return villain;
