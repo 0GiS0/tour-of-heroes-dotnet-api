@@ -75,7 +75,8 @@
             "grpcPort": 50002,
             "config": "./config-dapr/config.yaml",
             "logLevel": "debug",
-            "args": ["--enable-api-logging"]
+            "args": ["--enable-api-logging"],
+            "componentsPath": "./components/"
         },
         {
             "appId": "tour-of-heroes-api",

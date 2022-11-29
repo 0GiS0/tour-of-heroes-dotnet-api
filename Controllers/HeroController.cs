@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Net.Http;
+using Dapr;
 
 namespace tour_of_heroes_api.Controllers
 {
@@ -149,13 +150,16 @@ namespace tour_of_heroes_api.Controllers
 
             try
             {
+                CancellationTokenSource source = new CancellationTokenSource();
+                CancellationToken cancellationToken = source.Token;
+
                 var result = _daprClient.CreateInvokeMethodRequest(
                     HttpMethod.Get,
                     "tour-of-villains-api",
-                    "/villain/" + heroName
+                    $"/villain/{heroName}"
                 );
-                
-                villain = await _daprClient.InvokeMethodAsync<Villain>(result);                
+
+                villain = await _daprClient.InvokeMethodAsync<Villain>(result, cancellationToken);
             }
             catch (InvocationException ex)
             {
@@ -163,6 +167,17 @@ namespace tour_of_heroes_api.Controllers
             }
 
             return villain;
+        }
+
+        //Subscribe to a topic
+        // [Topic("villain-pub-sub", "villains")]
+        [HttpPost("/newvillain")]
+        public ActionResult NewVillain([FromBody] object villain)
+        {
+            _logger.LogInformation($"A new villain is in the city!");
+            _logger.LogInformation(villain.ToString());
+
+            return Ok();
         }
     }
 }

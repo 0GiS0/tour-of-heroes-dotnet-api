@@ -71,4 +71,4 @@ content-type: application/json
 }
 
 ###
-GET http://localhost:3502/v1.0/invoke/tour-of-villains-api/method/villain/batman HTTP/1.1
+GET http://localhost:3502/v1.0/invoke/tour-of-villains-api/method/villain/spiderman HTTP/1.1

@@ -9,3 +9,7 @@ docker run -d --name jaeger \
 
 # To view traces
 http://localhost:16686
+
+#Pub sub
+dapr publish --publish-app-id tour-of-villains-api --pubsub villain-pub-sub --topic villains --data '{"orderId": "100"}'
+
