@@ -1,14 +1,7 @@
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tour_of_heroes_api.Models;
 using Dapr.Client;
-using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
-using System.Threading;
-using System.Net.Http;
-using Dapr;
 
 namespace tour_of_heroes_api.Controllers
 {
@@ -80,7 +73,7 @@ namespace tour_of_heroes_api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutHero(int id, Hero hero)
         {
-            if (id != hero.Id)
+            if (id != hero.HeroId)
             {
                 return BadRequest();
             }
@@ -114,7 +107,7 @@ namespace tour_of_heroes_api.Controllers
             _context.Heroes.Add(hero);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetHero), new { id = hero.Id }, hero);
+            return CreatedAtAction(nameof(GetHero), new { id = hero.HeroId }, hero);
         }
 
         // DELETE: api/Hero/5
@@ -135,7 +128,7 @@ namespace tour_of_heroes_api.Controllers
 
         private bool HeroExists(int id)
         {
-            return _context.Heroes.Any(e => e.Id == id);
+            return _context.Heroes.Any(e => e.HeroId == id);
         }
 
         //Service-to-service invocation
@@ -146,20 +139,15 @@ namespace tour_of_heroes_api.Controllers
         {
             _logger.LogInformation($"Finding the villain for {heroName}...");
 
-            Villain villain = null;
+            Villain? villain = null;
 
             try
             {
-                CancellationTokenSource source = new CancellationTokenSource();
-                CancellationToken cancellationToken = source.Token;
-
-                var result = _daprClient.CreateInvokeMethodRequest(
+                villain = await _daprClient.InvokeMethodAsync<Villain>(
                     HttpMethod.Get,
                     "tour-of-villains-api",
                     $"/villain/{heroName}"
                 );
-
-                villain = await _daprClient.InvokeMethodAsync<Villain>(result, cancellationToken);
             }
             catch (InvocationException ex)
             {

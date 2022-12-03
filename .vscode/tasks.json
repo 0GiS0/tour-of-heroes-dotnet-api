@@ -65,7 +65,7 @@
             "dependsOn": "clean"
         },
         {
-             //https://docs.dapr.io/developing-applications/ides/vscode/vscode-how-to-debug-multiple-dapr-apps/#daprd-parameter-table
+            //https://docs.dapr.io/developing-applications/ides/vscode/vscode-how-to-debug-multiple-dapr-apps/#daprd-parameter-table
             "appId": "tour-of-heroes-api",
             "appPort": 5222,
             "label": "dapr-debug",
@@ -73,9 +73,11 @@
             "dependsOn": "build",
             "httpPort": 3502,
             "grpcPort": 50002,
-            "config": "./config-dapr/config.yaml",
             "logLevel": "debug",
-            "args": ["--enable-api-logging"],
+            "args": [
+                "--enable-api-logging"
+            ],
+            // "config": "./config-dapr/jaeger-config.yaml",
             "componentsPath": "./components/"
         },
         {
