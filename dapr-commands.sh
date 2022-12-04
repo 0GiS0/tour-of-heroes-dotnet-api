@@ -5,7 +5,7 @@ docker run -d --name jaeger \
   -e COLLECTOR_ZIPKIN_HOST_PORT=:9412 \
   -p 16686:16686 \
   -p 9412:9412 \
-  jaegertracing/all-in-one:1.22
+  jaegertracing/all-in-one
 
 # To view traces
 http://localhost:16686

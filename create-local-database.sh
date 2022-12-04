@@ -5,6 +5,7 @@ docker run \
 -e 'MSSQL_PID=Express' \
 --name sqlserver \
  -v mssqlserver_volume:/var/opt/mssql \
+ --restart always \
 -p 1433:1433 -d mcr.microsoft.com/mssql/server:latest
 
 # Apple M1
@@ -20,6 +21,7 @@ docker run \
 -e 'MSSQL_SA_PASSWORD=Password1!' \
  -v mssqlserver_volume:/var/opt/mssql \
 -p 1433:1433 \
+ --restart always \
 -d mcr.microsoft.com/azure-sql-edge
 
 # Create local database on Windows (PowerShell)
@@ -29,6 +31,7 @@ docker run `
 -e 'MSSQL_PID=Express' `
 --name sqlserver `
  -v mssqlserver_volume:/var/opt/mssql `
+  --restart always `
 -p 1433:1433 -d mcr.microsoft.com/mssql/server:latest
 
 #and just execute the Web API using this database

@@ -77,7 +77,7 @@
             "args": [
                 "--enable-api-logging"
             ],
-            // "config": "./config-dapr/jaeger-config.yaml",
+            // "config": "./config-dapr/jaeger-config.yaml",            
             "componentsPath": "./components/"
         },
         {
