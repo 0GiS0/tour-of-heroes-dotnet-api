@@ -1,14 +1,23 @@
+using Dapr.Client;
 using Microsoft.EntityFrameworkCore;
 using tour_of_heroes_api.Models;
+
+const string SECRET_STORE_NAME = "heroessecretstore";
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDaprClient();
 
-builder.Services.AddDbContext<HeroContext>(
-    opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
+using var daprClient = new DaprClientBuilder().Build();
+
+// builder.Services.AddDbContext<HeroContext>(
+//     opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+// );
+
+var connectionString = await daprClient.GetSecretAsync(SECRET_STORE_NAME, "ConnectionString");
+
+builder.Services.AddDbContext<HeroContext>(opt => opt.UseSqlServer(connectionString.First().Value));
 
 builder.Services.AddControllers();
 
