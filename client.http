@@ -1,3 +1,48 @@
+#### Fill database ###
+POST http://localhost:5222/api/hero HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Batman",
+    "description": "Un multimillonario magnate empresarial y filántropo dueño de Empresas Wayne en Gotham City. Después de presenciar el asesinato de sus padres, el Dr. Thomas Wayne y Martha Wayne en un violento y fallido asalto cuando era niño, juró venganza contra los criminales, un juramento moderado por el sentido de la justicia.",
+    "alterEgo": "Bruce Wayne" 
+   
+}
+
+###
+POST  http://localhost:5222/api/hero HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Spiderman",
+    "description": "un joven huérfano neoyorquino que adquiere superpoderes después de ser mordido por una araña radiactiva, y cuya ideología como héroe se ve reflejada primordialmente en la expresión «un gran poder conlleva una gran responsabilidad».20​21​ Suele ser asociado con una personalidad bromista, amable, inventiva y optimista, lo que le ha llevado a ser catalogado como el «vecino amigable» de cualquiera lo cual, aunado a sus vivencias caracterizadas por los problemas cotidianos.",
+    "alterEgo": "Peter Parker"
+}
+
+###
+POST  http://localhost:5222/api/hero HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Luke Cage",
+    "description": "Es un exconvicto encarcelado por un crimen que no cometió, que gana los poderes de la fuerza sobrehumana y la piel irrompible después de someterse voluntariamente a un procedimiento experimental.",
+    "alterEgo": "Carl Lucas"  
+}
+
+###
+POST  http://localhost:5222/api/hero HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Thor",
+    "description": "Es el dios del trueno y fuerza en la mitología nórdica y germánica. Su papel es complejo ya que tenía influencia en áreas muy diferentes, tales como el clima, las cosechas, la protección, la consagración, la justicia, las lidias, los viajes y las batallas.",
+    "alterEgo": "Thor"  
+}
+
+
+###
+GET  http://localhost:5222/api/hero HTTP/1.1
+
 ### Service-to-service invocation
 
 ###
