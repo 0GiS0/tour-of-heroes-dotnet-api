@@ -46,6 +46,15 @@
                 "/Views": "${workspaceFolder}/Views"
             },
             "postDebugTask": "daprd-down"
+        },
+        {
+            "name": "Docker .NET Core Launch",
+            "type": "docker",
+            "request": "launch",
+            "preLaunchTask": "docker-run: debug",
+            "netCore": {
+                "appProject": "${workspaceFolder}/tour-of-heroes-api.csproj"
+            }
         }
     ]
 }

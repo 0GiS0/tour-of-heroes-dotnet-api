@@ -65,7 +65,6 @@
             "dependsOn": "clean"
         },
         {
-            //https://docs.dapr.io/developing-applications/ides/vscode/vscode-how-to-debug-multiple-dapr-apps/#daprd-parameter-table
             "appId": "tour-of-heroes-api",
             "appPort": 5222,
             "label": "dapr-debug",
@@ -77,13 +76,68 @@
             "args": [
                 "--enable-api-logging"
             ],
-            // "config": "./config-dapr/jaeger-config.yaml",            
             "componentsPath": "./components/"
         },
         {
             "appId": "tour-of-heroes-api",
             "label": "daprd-down",
             "type": "daprd-down"
+        },
+        {
+            "type": "docker-build",
+            "label": "docker-build: debug",
+            "dependsOn": [
+                "build"
+            ],
+            "dockerBuild": {
+                "tag": "tourofheroesdotnetapi:dev",
+                "target": "base",
+                "dockerfile": "${workspaceFolder}/Dockerfile",
+                "context": "${workspaceFolder}",
+                "pull": true
+            },
+            "netCore": {
+                "appProject": "${workspaceFolder}/tour-of-heroes-api.csproj"
+            }
+        },
+        {
+            "type": "docker-build",
+            "label": "docker-build: release",
+            "dependsOn": [
+                "build"
+            ],
+            "dockerBuild": {
+                "tag": "tourofheroesdotnetapi:latest",
+                "dockerfile": "${workspaceFolder}/Dockerfile",
+                "context": "${workspaceFolder}",
+                "pull": true
+            },
+            "netCore": {
+                "appProject": "${workspaceFolder}/tour-of-heroes-api.csproj"
+            }
+        },
+        {
+            "type": "docker-run",
+            "label": "docker-run: debug",
+            "dependsOn": [
+                "docker-build: debug"
+            ],
+            "dockerRun": {},
+            "netCore": {
+                "appProject": "${workspaceFolder}/tour-of-heroes-api.csproj",
+                "enableDebugging": true
+            }
+        },
+        {
+            "type": "docker-run",
+            "label": "docker-run: release",
+            "dependsOn": [
+                "docker-build: release"
+            ],
+            "dockerRun": {},
+            "netCore": {
+                "appProject": "${workspaceFolder}/tour-of-heroes-api.csproj"
+            }
         }
     ]
 }
