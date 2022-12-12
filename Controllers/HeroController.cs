@@ -107,6 +107,8 @@ namespace tour_of_heroes_api.Controllers
             _context.Heroes.Add(hero);
             await _context.SaveChangesAsync();
 
+            await UpdateCache();
+            
             return CreatedAtAction(nameof(GetHero), new { id = hero.HeroId }, hero);
         }
 
