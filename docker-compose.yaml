@@ -15,7 +15,6 @@ services:
     depends_on:
       - redis
       - sqlserver
-      # - placement
     networks:
       - tour-of-heroes-dapr
   tour-of-heroes-api-dapr:
@@ -43,9 +42,9 @@ services:
     depends_on:
       - tour-of-heroes-api
     network_mode: "service:tour-of-heroes-api"
-  ############################
-  # tour of villains api + dapr sidecar
-  ############################
+  #######################################
+  # tour of villains api + dapr sidecar #
+  #######################################
   tour-of-villains-api:
     build: ~/Desktop/Dev/tour-of-villains-api
     ports:
