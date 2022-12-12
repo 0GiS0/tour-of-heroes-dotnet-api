@@ -7,7 +7,7 @@ services:
     build: ~/Desktop/Dev/tour-of-heroes-dotnet-api   
     ports:
       - 5222:5222
-      - 50002:50002
+      - 50002:50002 # Dapr instances communicate over gRPC so we need to expose the gRPC port
     environment:
       - "DAPR_HTTP_PORT=3502"
       - "DAPR_GRPC_PORT=50002"
@@ -49,6 +49,7 @@ services:
     build: ~/Desktop/Dev/tour-of-villains-api
     ports:
       - 5111:5111
+      - 50001:50001 # Dapr instances communicate over gRPC so we need to expose the gRPC port
     environment:
       - "DAPR_HTTP_PORT=3501"
       - "DAPR_GRPC_PORT=50001"
