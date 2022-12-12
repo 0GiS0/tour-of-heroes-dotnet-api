@@ -1,8 +1,8 @@
 version: '3'
 services:
-  ############################
-  # tour of heroes api + dapr sidecar
-  ############################
+  #####################################
+  # tour of heroes api + dapr sidecar #
+  #####################################
   tour-of-heroes-api:
     build: ~/Desktop/Dev/tour-of-heroes-dotnet-api   
     ports:
@@ -82,7 +82,7 @@ services:
       - tour-of-villains-api
     network_mode: "service:tour-of-villains-api"
   ############################
-  # Redis state store
+  # Redis state store        #
   ############################
   redis:
     image: "redis:alpine"
@@ -91,7 +91,7 @@ services:
     networks:
       - tour-of-heroes-dapr
   ############################
-  # SQL Server
+  # SQL Server               #
   ############################
   sqlserver:
     image: mcr.microsoft.com/mssql/server
@@ -102,8 +102,8 @@ services:
     networks:
       - tour-of-heroes-dapr
   ###########################
-  # Dapr dashboard
-  ############################
+  # Dapr dashboard          #
+  ###########################
   # dapr-dashboard:
   #   image: "ghcr.io/dapr/dashboard:latest"
   #   ports:
