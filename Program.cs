@@ -16,7 +16,7 @@ using var daprClient = new DaprClientBuilder().Build();
 // );
 
 await daprClient.WaitForSidecarAsync();
-var connectionString = await daprClient.GetSecretAsync(SECRET_STORE_NAME, "ConnectionString");
+var connectionString = await daprClient.GetSecretAsync(SECRET_STORE_NAME, "sql-connection-string");
 
 builder.Services.AddDbContext<HeroContext>(opt => opt.UseSqlServer(connectionString.First().Value));
 
