@@ -1,10 +1,10 @@
 # Create k8s cluster for dapr
 kind create cluster --name dapr-k8s --config kind-cluster-config.yaml
 
-# Initialice dapr
+# Install dapr
 dapr init --kubernetes --wait
 
-# Verify 
+# Verify installation
 dapr status -k
 
 # Deploy demo
@@ -15,13 +15,13 @@ brew install watch
 watch kubectl get pods
 
 # Check services
-k get svc
+kubectl get svc
 
-# cURL things
+# Variables for cURL commands
 HERO_API_URL=http://localhost:30080/api/hero
 VILLAIN_API_URL=http://localhost:30090/villain
 
-# check if hero api is working
+# Check if hero api is working
 curl $HERO_API_URL | jq
 
 curl --header "Content-Type: application/json" \
@@ -34,10 +34,10 @@ curl --header "Content-Type: application/json" \
 }' \
   $HERO_API_URL | jq
 
-#check get heroes again
+# Get heroes again
 curl $HERO_API_URL | jq
 
-# check if villain api is working
+# Check if villain api is working
 curl --header "Content-Type: application/json" \
   --request POST \
   --data '{
@@ -51,10 +51,10 @@ curl --header "Content-Type: application/json" \
 }' \
   $VILLAIN_API_URL | jq
 
-# check if pub sub is working viewing logs
+# Check if pub sub is working viewing logs
 kubectl logs -l app=tour-of-heroes-api -c tour-of-heroes-api
 
-# check if service to service invocation is working
+# Check if service to service invocation is working
 curl $HERO_API_URL/villain/spiderman | jq
 
 # Forward a port to Dapr dashboard
