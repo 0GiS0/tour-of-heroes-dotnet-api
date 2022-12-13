@@ -7,7 +7,7 @@ dapr init --kubernetes --wait
 # Verify 
 dapr status -k
 
-# Deploy tour-of-heroes 
+# Deploy demo
 kubectl apply -f dapr-k8s-manifests --recursive
 
 # Wait until pods are ready
