@@ -36,10 +36,11 @@ spec:
         dapr.io/app-id: "tour-of-heroes-api"
         dapr.io/app-port: "5222"
         dapr.io/enable-api-logging: "true"
+        dapr.io/config: "tracing"
     spec:
-      containers:     
-        - image: ghcr.io/0gis0/tour-of-heroes-dotnet-api/tour-of-heroes-api-dapr:55e4cea
+      containers:
+        - image: ghcr.io/0gis0/tour-of-heroes-dotnet-api/tour-of-heroes-api-dapr:2086efd
           name: tour-of-heroes-api
           ports:
-          - containerPort: 5222
-            name: web
+            - containerPort: 5222
+              name: web

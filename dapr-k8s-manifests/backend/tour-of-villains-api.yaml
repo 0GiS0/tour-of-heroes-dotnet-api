@@ -5,17 +5,16 @@ metadata:
     app: tour-of-villains-api
   name: tour-of-villains-api
 spec:
-  type: NodePort  
+  type: NodePort
   ports:
-  - name: web
-    port: 80
-    targetPort: 5111
-    nodePort: 30090
+    - name: web
+      port: 80
+      targetPort: 5111
+      nodePort: 30090
   selector:
     app: tour-of-villains-api
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -37,6 +36,7 @@ spec:
         dapr.io/app-id: "tour-of-villains-api"
         dapr.io/app-port: "5111"
         dapr.io/enable-api-logging: "true"
+        dapr.io/config: "tracing"
     spec:
       containers:
         - env:
