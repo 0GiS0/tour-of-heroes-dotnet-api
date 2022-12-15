@@ -5,12 +5,14 @@ metadata:
     app: tour-of-heroes-api
   name: tour-of-heroes-api
 spec:
-  type: NodePort
+  # type: NodePort
+  type: LoadBalancer
   ports:
     - name: web
-      port: 5222
+      # port: 5222
+      port: 80
       targetPort: 5222
-      nodePort: 30080
+      # nodePort: 30080
   selector:
     app: tour-of-heroes-api
 

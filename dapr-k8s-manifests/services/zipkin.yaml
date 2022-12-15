@@ -5,11 +5,12 @@ metadata:
     name: zipkin
   name: zipkin
 spec:
-  type: NodePort
+  # type: NodePort
+  type: ClusterIP
   ports:
     - port: 9411
       targetPort: 9411
-      nodePort: 30070
+      # nodePort: 30070
   selector:
     app: zipkin
 ---

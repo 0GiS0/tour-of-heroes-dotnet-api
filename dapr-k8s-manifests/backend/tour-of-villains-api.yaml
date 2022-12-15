@@ -5,12 +5,13 @@ metadata:
     app: tour-of-villains-api
   name: tour-of-villains-api
 spec:
-  type: NodePort
+  # type: NodePort
+  type: LoadBalancer
   ports:
     - name: web
       port: 80
       targetPort: 5111
-      nodePort: 30090
+      # nodePort: 30090
   selector:
     app: tour-of-villains-api
 
