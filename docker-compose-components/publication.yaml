@@ -9,4 +9,4 @@ spec:
   - name: redisHost
     value: redis:6379
   - name: redisPassword
-    value: ""
+    value: "passw0d!"

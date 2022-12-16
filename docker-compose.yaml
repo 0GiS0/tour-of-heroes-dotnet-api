@@ -36,7 +36,7 @@ services:
         "debug"
       ]
     environment:
-      - ConnectionString=Server=sqlserver,1433;Initial Catalog=heroes;Persist Security Info=False;User ID=sa;Password=Password1!
+      - sql-connection-string=Server=sqlserver,1433;Initial Catalog=heroes;Persist Security Info=False;User ID=sa;Password=Password1!
     volumes:
       - /Users/gis/Desktop/Dev/tour-of-heroes-dotnet-api/docker-compose-components/:/components
     depends_on:
@@ -56,6 +56,7 @@ services:
       - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Initial Catalog=heroes;Persist Security Info=False;User ID=sa;Password=Password1!
     depends_on:
       - redis
+      - sqlserver
     networks:
       - tour-of-heroes-dapr
   tour-of-villains-api-dapr:
@@ -88,6 +89,7 @@ services:
     image: "redis:alpine"
     ports:
       - "6380:6379"
+    command: ["--requirepass", "passw0d!"]
     networks:
       - tour-of-heroes-dapr
   ############################
