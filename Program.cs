@@ -35,6 +35,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+//For Dapr pubsub 
+app.MapSubscribeHandler();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

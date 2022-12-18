@@ -160,7 +160,7 @@ namespace tour_of_heroes_api.Controllers
             return villain;
         }
 
-        //Subscribe to a topic
+        //Subscribe to a topic        
         [Topic("villain-pub-sub", "villains")]
         [HttpPost("/newvillain")]
         public ActionResult NewVillain([FromBody] object villain)

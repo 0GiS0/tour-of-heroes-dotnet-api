@@ -11,22 +11,13 @@ az provider register --namespace Microsoft.OperationalInsights
 RESOURCE_GROUP="tour-of-heroes-capps"
 LOCATION="northeurope"
 CONTAINERAPPS_ENVIRONMENT="heroes-and-villains-env"
-VNET_NAME="capps-vnet"
 
 # Create a resource group
 az group create --name $RESOURCE_GROUP --location $LOCATION
 
-# Create an environment
-az containerapp env create \
-  --name $CONTAINERAPPS_ENVIRONMENT \
-  --resource-group $RESOURCE_GROUP \
-  --location "$LOCATION" 
-
-
 #######################
 ### Deploy services ###
 #######################
-
 
 # Redis
 REDIS_NAME="redis-cache-for-capps"
@@ -34,7 +25,7 @@ REDIS_NAME="redis-cache-for-capps"
 az redis create --location $LOCATION --name $REDIS_NAME --resource-group $RESOURCE_GROUP --sku Basic --vm-size c0 --redis-version 6 --enable-non-ssl-port 
 REDIS_HOSTNAME=$(az redis show --name $REDIS_NAME --resource-group $RESOURCE_GROUP --query "hostName" -o tsv)
 REDIS_ACCESS_KEY=$(az redis list-keys --name $REDIS_NAME --resource-group $RESOURCE_GROUP --query "primaryKey" -o tsv)
-az redis delete --name $REDIS_NAME --resource-group $RESOURCE_GROUP --yes
+# az redis delete --name $REDIS_NAME --resource-group $RESOURCE_GROUP --yes
 
 # SQL Server
 SQL_SERVER_NAME="sqlserver-for-capps"
@@ -46,13 +37,11 @@ az sql server create --name $SQL_SERVER_NAME --resource-group $RESOURCE_GROUP --
 az sql server firewall-rule create --resource-group $RESOURCE_GROUP --server $SQL_SERVER_NAME -n AllowYourIp --start-ip-address $startIp --end-ip-address $endIp
 SQL_FQDN=$(az sql server show --name $SQL_SERVER_NAME --resource-group $RESOURCE_GROUP --query "fullyQualifiedDomainName" -o tsv)
 
-# Azure key vault
-KEY_VAULT_NAME="key-vault-for-capps"
-
 # Generating a new Azure AD application and Service Principal 
 # https://docs.dapr.io/developing-applications/integrations/azure/authenticating-azure/
-APP_NAME="ad-app-for-capps"
+
 # Create the app
+APP_NAME="app-for-capps"
 APP_ID=$(az ad app create --display-name "${APP_NAME}"  | jq -r .appId)
 
 # To create a client secret
@@ -62,6 +51,7 @@ CLIENT_SECRET=$(az ad app credential reset --id "${APP_ID}" --years 2 | jq -r .p
 SERVICE_PRINCIPAL_ID=$(az ad sp create --id "${APP_ID}" | jq -r .id)
 
 # Create keyvault 
+KEY_VAULT_NAME="key-vault-for-capps"
 az keyvault create \
 --name $KEY_VAULT_NAME \
 --resource-group $RESOURCE_GROUP \
@@ -86,6 +76,18 @@ az keyvault secret set -n sql-connection-string \
 --value "Server=${SQL_FQDN},1433;Initial Catalog=heroes;Persist Security Info=False;User ID=${SQL_SERVER_USER};Password=${SQL_SERVER_PASSWORD};" \
 --vault-name $KEY_VAULT_NAME
 
+# Application Insights
+APP_INSIGHTS_NAME="insights-from-capps"
+az monitor app-insights component create --app $APP_INSIGHTS_NAME --location $LOCATION  --resource-group $RESOURCE_GROUP
+APP_INSIGHRS_INSTRUMENTATION_KEY=$(az monitor app-insights component show --app $APP_INSIGHTS_NAME --resource-group $RESOURCE_GROUP --query instrumentationKey)
+
+# Create a Container App Environment
+az containerapp env create \
+  --name $CONTAINERAPPS_ENVIRONMENT \
+  --resource-group $RESOURCE_GROUP \
+  --location "$LOCATION" \
+  --dapr-instrumentation-key $APP_INSIGHRS_INSTRUMENTATION_KEY
+
 # Configure the Dapr components in the Container Apps environment.
 # https://learn.microsoft.com/en-us/azure/container-apps/dapr-overview?tabs=bicep1%2Cyaml#component-schema
 
@@ -95,7 +97,7 @@ version: v1
 componentType: state.redis
 metadata:
   - name: redisHost
-    value: ${REDIS_NAME}.redis.cache.windows.net:6379
+    value: ${REDIS_HOSTNAME}:6379
   - name: redisPassword
     value: "${REDIS_ACCESS_KEY}"
   - name: actorStateStore
@@ -153,12 +155,12 @@ EOF
 
 az containerapp env dapr-component set \
     --name $CONTAINERAPPS_ENVIRONMENT --resource-group $RESOURCE_GROUP \
-    --dapr-component-name pubsub \
+    --dapr-component-name villain-pub-sub \
     --yaml az-container-apps-dapr-components/publication.yaml
 
 az containerapp env dapr-component remove \
     --name $CONTAINERAPPS_ENVIRONMENT --resource-group $RESOURCE_GROUP \
-    --dapr-component-name pubsub 
+    --dapr-component-name villain-pub-sub 
 
 ### subcription ### NOT SUPPORTED
 # az containerapp env dapr-component set \
@@ -167,7 +169,7 @@ az containerapp env dapr-component remove \
 #     --yaml az-container-apps-dapr-components/subscription.yaml
 
 az containerapp env dapr-component list --name $CONTAINERAPPS_ENVIRONMENT --resource-group $RESOURCE_GROUP -o table
-az containerapp env dapr-component show  --dapr-component-name secretstore --name $CONTAINERAPPS_ENVIRONMENT --resource-group $RESOURCE_GROUP -o yaml
+az containerapp env dapr-component show  --dapr-component-name statestore --name $CONTAINERAPPS_ENVIRONMENT --resource-group $RESOURCE_GROUP -o yaml
 
 #### APIs with Dapr ####
 
@@ -176,7 +178,7 @@ az containerapp create \
   --name tour-of-villains-api \
   --resource-group $RESOURCE_GROUP \
   --environment $CONTAINERAPPS_ENVIRONMENT \
-  --image ghcr.io/0gis0/tour-of-villains-api/tour-of-villains-api-dapr:bd00533 \
+  --image ghcr.io/0gis0/tour-of-villains-api/tour-of-villains-api-dapr:ab34791 \
   --env-vars ConnectionStrings__DefaultConnection="Server=${SQL_FQDN},1433;Initial Catalog=heroes;Persist Security Info=False;User ID=${SQL_SERVER_USER};Password=${SQL_SERVER_PASSWORD};" \
   --target-port 5111 \
   --ingress 'external' \
@@ -190,9 +192,9 @@ az containerapp create \
 
 az containerapp browse -n tour-of-villains-api -g $RESOURCE_GROUP
 
-# az containerapp delete \
-# --name tour-of-villains-api \
-# --resource-group $RESOURCE_GROUP --yes
+az containerapp delete \
+--name tour-of-villains-api \
+--resource-group $RESOURCE_GROUP --yes
 
 # See logs
 az containerapp logs show --resource-group $RESOURCE_GROUP -n tour-of-villains-api --follow
@@ -206,7 +208,7 @@ az containerapp create \
   --name tour-of-heroes-api \
   --resource-group $RESOURCE_GROUP \
   --environment $CONTAINERAPPS_ENVIRONMENT \
-  --image ghcr.io/0gis0/tour-of-heroes-dotnet-api/tour-of-heroes-api-dapr:bf1be45 \
+  --image ghcr.io/0gis0/tour-of-heroes-dotnet-api/tour-of-heroes-api-dapr:ae72cf0 \
   --target-port 5222 \
   --exposed-port 80 \
   --ingress 'external' \
@@ -224,9 +226,9 @@ az containerapp browse -n tour-of-heroes-api -g $RESOURCE_GROUP
 az containerapp logs show --resource-group $RESOURCE_GROUP -n tour-of-heroes-api --container daprd --follow
 az containerapp logs show --resource-group $RESOURCE_GROUP -n tour-of-heroes-api --container tour-of-heroes-api --follow
 
-az containerapp delete \
---name tour-of-heroes-api \
---resource-group $RESOURCE_GROUP --yes
+# az containerapp delete \
+# --name tour-of-heroes-api \
+# --resource-group $RESOURCE_GROUP --yes
 
 # Using YAML file: https://learn.microsoft.com/en-us/azure/container-apps/azure-resource-manager-api-spec?tabs=yaml#container-app-examples
 LOG_ANALYTICS_WORKSPACE_CLIENT_ID=`az containerapp env show --name $CONTAINERAPPS_ENVIRONMENT --resource-group $RESOURCE_GROUP --query properties.appLogsConfiguration.logAnalyticsConfiguration.customerId --out tsv`
@@ -282,12 +284,19 @@ curl -L --post301 --header "Content-Type: application/json" \
 }' \
   $VILLAIN_API_URL | jq
 
+
+
 # Check if pub sub is working viewing logs
 # kubectl logs -l app=tour-of-heroes-api -c tour-of-heroes-api
-az containerapp logs show --resource-group $RESOURCE_GROUP -n tour-of-heroes-api --container tour-of-heroes-api --follow
+az containerapp logs show --resource-group $RESOURCE_GROUP -n tour-of-heroes-api --container tour-of-heroes-api
+
+#Check keys in the redis cache
+docker run --name redis-client --rm redis redis-cli -h $REDIS_HOSTNAME -a $REDIS_ACCESS_KEY KEYS '*'
 
 # Check if service to service invocation is working
 curl -L $HERO_API_URL/villain/spiderman | jq
+
+# Check App Insights - Application Map
 
 az group delete -n $RESOURCE_GROUP -y --no-wait
 
