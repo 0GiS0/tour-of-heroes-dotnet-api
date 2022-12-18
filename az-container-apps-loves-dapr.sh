@@ -152,6 +152,8 @@ az sql server create --name $SQL_SERVER_NAME --resource-group $RESOURCE_GROUP --
 az sql server firewall-rule create --resource-group $RESOURCE_GROUP --server $SQL_SERVER_NAME -n AllowYourIp --start-ip-address $startIp --end-ip-address $endIp
 SQL_FQDN=$(az sql server show --name $SQL_SERVER_NAME --resource-group $RESOURCE_GROUP --query "fullyQualifiedDomainName" -o tsv)
 
+
+
 # Configure the Dapr components in the Container Apps environment.
 # https://learn.microsoft.com/en-us/azure/container-apps/dapr-overview?tabs=bicep1%2Cyaml#component-schema
 ### state store ###
@@ -226,7 +228,7 @@ az containerapp logs show --resource-group $RESOURCE_GROUP -n tour-of-villains-a
   --name tour-of-heroes-api \
   --resource-group $RESOURCE_GROUP \
   --environment $CONTAINERAPPS_ENVIRONMENT \
-  --image ghcr.io/0gis0/tour-of-heroes-dotnet-api/tour-of-heroes-api-dapr:1b49d7b \
+  --image ghcr.io/0gis0/tour-of-heroes-dotnet-api/tour-of-heroes-api-dapr:85959f5 \
   --target-port 5222 \
   --exposed-port 80 \
   --ingress 'external' \
@@ -237,15 +239,27 @@ az containerapp logs show --resource-group $RESOURCE_GROUP -n tour-of-villains-a
   --dapr-app-port  5222 \
   --dapr-log-level debug \
   --dapr-enable-api-logging \
-  --cpu 0.25 --memory 0.5Gi 
+  --cpu 0.25 --memory 0.5Gi \
+  --secrets sql-connection="Server=${SQL_FQDN},1433;Initial Catalog=heroes;Persist Security Info=False;User ID=${SQL_SERVER_USER};Password=${SQL_SERVER_PASSWORD};" \
+  --env
 
-az containerapp secret set  \
--n tour-of-heroes-api -g $RESOURCE_GROUP \
---secrets sql-connection="Server=${SQL_FQDN},1433;Initial Catalog=heroes;Persist Security Info=False;User ID=${SQL_SERVER_USER};Password=${SQL_SERVER_PASSWORD};"
+
+
+
+az containerapp update \
+  --name tour-of-heroes-api \
+  --resource-group $RESOURCE_GROUP \
+  --scale-rule-name my-http-rule \
+  --scale-rule-http-concurrency 2
+
+
+REVISION_NAME=$(az containerapp revision list --name tour-of-heroes-api --resource-group $RESOURCE_GROUP --query "[0].name")
+
+az containerapp revision restart -n tour-of-heroes-api -g $RESOURCE_GROUP --revision $REVISION_NAME
 
 az containerapp browse -n tour-of-heroes-api -g $RESOURCE_GROUP
 
-az containerapp logs show --resource-group $RESOURCE_GROUP -n tour-of-heroes-api --follow
+az containerapp logs show --resource-group $RESOURCE_GROUP -n tour-of-heroes-api --container tour-of-heroes-api --follow
 
 
 # Using YAML file: https://learn.microsoft.com/en-us/azure/container-apps/azure-resource-manager-api-spec?tabs=yaml#container-app-examples
