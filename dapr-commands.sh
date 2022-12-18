@@ -46,12 +46,11 @@ az role assignment create \
   --role "Key Vault Secrets User" \
   --scope "${RESOURE_GROUP_ID}/providers/Microsoft.KeyVault/vaults/${KEYVAULT_NAME}"
 
-# Assing role to  Microsoft Azure CLI
-# https://learn.microsoft.com/en-us/troubleshoot/azure/active-directory/verify-first-party-apps-sign-in#:~:text=Microsoft%20Azure%20CLI,461a%2Dbbee%2D02f9e1bf7b46
+# Assing role to me
 az role assignment create \
-  --assignee 04b07795-8ddb-461a-bbee-02f9e1bf7b46 \
+  --assignee $(az ad signed-in-user show --query id -o tsv) \
   --role "Key Vault Secrets Officer" \
-  --scope "${RESOURE_GROUP_ID}/providers/Microsoft.KeyVault/vaults/${KEYVAULT_NAME}"
+  --scope "${RESOURCE_GROUP_ID}/providers/Microsoft.KeyVault/vaults/${KEYVAULT_NAME}"
 
 # Add new secret to the az key vault
 az keyvault secret set -n ConnectionString \

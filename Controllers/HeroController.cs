@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tour_of_heroes_api.Models;
 using Dapr.Client;
+using Dapr;
 
 namespace tour_of_heroes_api.Controllers
 {
@@ -160,7 +161,7 @@ namespace tour_of_heroes_api.Controllers
         }
 
         //Subscribe to a topic
-        // [Topic("villain-pub-sub", "villains")]
+        [Topic("villain-pub-sub", "villains")]
         [HttpPost("/newvillain")]
         public ActionResult NewVillain([FromBody] object villain)
         {
