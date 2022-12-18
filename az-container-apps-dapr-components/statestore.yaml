@@ -16,9 +16,10 @@ version: v1
 componentType: state.redis
 metadata:
   - name: redisHost
-    # value: redis:6379
-    value: redis--8ho6mdj.internal.calmbeach-9f999c94.northeurope.azurecontainerapps.io:6379
+    value: <REDIS_NAME>.redis.cache.windows.net:6379
   - name: redisPassword
-    value: "passw0d!"
+    value: "<REDIS_PRIMARY_KEY>"
   - name: actorStateStore
     value: "true"
+scopes:
+- tour-of-heroes-api

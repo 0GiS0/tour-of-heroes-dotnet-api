@@ -89,7 +89,7 @@ services:
     image: "redis:alpine"
     ports:
       - "6380:6379"
-    command: ["--requirepass", "passw0d!"]
+    command: ["--requirepass", "passw0rd!"]
     networks:
       - tour-of-heroes-dapr
   ############################
