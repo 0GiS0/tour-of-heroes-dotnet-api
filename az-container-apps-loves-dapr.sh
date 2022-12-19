@@ -10,7 +10,6 @@ az provider register --namespace Microsoft.OperationalInsights
 # Variables
 RESOURCE_GROUP="tour-of-heroes-capps"
 LOCATION="northeurope"
-CONTAINERAPPS_ENVIRONMENT="heroes-and-villains-env"
 
 # Create a resource group
 az group create --name $RESOURCE_GROUP --location $LOCATION
@@ -82,6 +81,7 @@ az monitor app-insights component create --app $APP_INSIGHTS_NAME --location $LO
 APP_INSIGHRS_INSTRUMENTATION_KEY=$(az monitor app-insights component show --app $APP_INSIGHTS_NAME --resource-group $RESOURCE_GROUP --query instrumentationKey)
 
 # Create a Container App Environment
+CONTAINERAPPS_ENVIRONMENT="heroes-and-villains-env"
 az containerapp env create \
   --name $CONTAINERAPPS_ENVIRONMENT \
   --resource-group $RESOURCE_GROUP \
@@ -192,9 +192,9 @@ az containerapp create \
 
 az containerapp browse -n tour-of-villains-api -g $RESOURCE_GROUP
 
-az containerapp delete \
---name tour-of-villains-api \
---resource-group $RESOURCE_GROUP --yes
+# az containerapp delete \
+# --name tour-of-villains-api \
+# --resource-group $RESOURCE_GROUP --yes
 
 # See logs
 az containerapp logs show --resource-group $RESOURCE_GROUP -n tour-of-villains-api --follow
@@ -208,12 +208,10 @@ az containerapp create \
   --name tour-of-heroes-api \
   --resource-group $RESOURCE_GROUP \
   --environment $CONTAINERAPPS_ENVIRONMENT \
-  --image ghcr.io/0gis0/tour-of-heroes-dotnet-api/tour-of-heroes-api-dapr:ae72cf0 \
+  --image ghcr.io/0gis0/tour-of-heroes-dotnet-api/tour-of-heroes-api-dapr:3312b3b \
   --target-port 5222 \
   --exposed-port 80 \
   --ingress 'external' \
-  --min-replicas 1 \
-  --max-replicas 3 \
   --enable-dapr true \
   --dapr-app-id tour-of-heroes-api \
   --dapr-app-port  5222 \
@@ -244,7 +242,7 @@ az monitor log-analytics query \
 --out table
 
 
-# Test API
+# Test APIs
 
 CAPPS_HERO_API=$(az containerapp show --name tour-of-heroes-api --resource-group $RESOURCE_GROUP --query "properties.configuration.ingress.fqdn" -o tsv)
 CAPPS_VILLAINS_API=$(az containerapp show --name tour-of-villains-api --resource-group $RESOURCE_GROUP --query "properties.configuration.ingress.fqdn" -o tsv)
@@ -301,5 +299,3 @@ curl -L $HERO_API_URL/villain/spiderman | jq
 az group delete -n $RESOURCE_GROUP -y --no-wait
 
 # https://learn.microsoft.com/en-us/azure/container-apps/dapr-overview?tabs=bicep1%2Cyaml#unsupported-dapr-capabilities
-
-# https://techcommunity.microsoft.com/t5/apps-on-azure-blog/accelerating-azure-container-apps-with-the-azure-cli-and-compose/ba-p/3516636
