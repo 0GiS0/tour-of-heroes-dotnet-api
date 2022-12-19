@@ -111,9 +111,9 @@ az containerapp env dapr-component set \
     --dapr-component-name statestore \
     --yaml az-container-apps-dapr-components/statestore.yaml
 
-az containerapp env dapr-component remove \
-    --name $CONTAINERAPPS_ENVIRONMENT --resource-group $RESOURCE_GROUP \
-    --dapr-component-name statestore 
+# az containerapp env dapr-component remove \
+#     --name $CONTAINERAPPS_ENVIRONMENT --resource-group $RESOURCE_GROUP \
+#     --dapr-component-name statestore 
 
 ### secret store ###
 ### kubernetes secret store not supported
@@ -158,9 +158,9 @@ az containerapp env dapr-component set \
     --dapr-component-name villain-pub-sub \
     --yaml az-container-apps-dapr-components/publication.yaml
 
-az containerapp env dapr-component remove \
-    --name $CONTAINERAPPS_ENVIRONMENT --resource-group $RESOURCE_GROUP \
-    --dapr-component-name villain-pub-sub 
+# az containerapp env dapr-component remove \
+#     --name $CONTAINERAPPS_ENVIRONMENT --resource-group $RESOURCE_GROUP \
+#     --dapr-component-name villain-pub-sub 
 
 ### subcription ### NOT SUPPORTED
 # az containerapp env dapr-component set \
