@@ -29,6 +29,7 @@ jobs:
       - uses: docker/build-push-action@v3
         with:         
           context: .
-          platforms: linux/amd64,linux/arm64
+          # platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           push: true
           tags: ghcr.io/0gis0/tour-of-heroes-dotnet-api/tour-of-heroes-api:${{ steps.vars.outputs.tag }}
