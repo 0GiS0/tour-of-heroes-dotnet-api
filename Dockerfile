@@ -10,15 +10,28 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 USER appuser
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+
+ARG TARGETARCH
+ARG TARGETOS
+
+RUN arch=$TARGETARCH \
+    && if [ "$arch" = "amd64" ]; then arch="x64"; fi \
+    && echo $TARGETOS-$arch > /tmp/rid
+
+
 WORKDIR /src
 COPY ["tour-of-heroes-api.csproj", "./"]
-RUN dotnet restore "tour-of-heroes-api.csproj"
+# RUN dotnet restore "tour-of-heroes-api.csproj"
+
+RUN dotnet restore -r $(cat /tmp/rid) "tour-of-heroes-api.csproj" 
+
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "tour-of-heroes-api.csproj" -c Release -o /app/build
+# WORKDIR "/src/."
+# RUN dotnet build "tour-of-heroes-api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "tour-of-heroes-api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+# RUN dotnet publish "tour-of-heroes-api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "tour-of-heroes-api.csproj" -c Release -o /app/publish -r $(cat /tmp/rid) --self-contained false --no-restore
 
 FROM base AS final
 WORKDIR /app
