@@ -1,11 +1,8 @@
-GET https://0gis0-ominous-telegram-4q5ww65rg27qxr-5010.preview.app.github.dev/api/hero HTTP/1.1
-
-###
-
 GET https://{{$processEnv CODESPACE_NAME}}-5010.{{$processEnv GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}}/api/hero HTTP/1.1
+X-Github-Token: {{$processEnv GITHUB_TOKEN}}
 
 ###
-POST https://0gis0-ominous-telegram-4q5ww65rg27qxr-5010.preview.app.github.dev/api/hero HTTP/1.1
+POST https://{{$processEnv CODESPACE_NAME}}-5010.{{$processEnv GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}}/api/hero HTTP/1.1
 content-type: application/json
 
 {
@@ -15,7 +12,7 @@ content-type: application/json
 }
 
 ###
-POST https://0gis0-ominous-telegram-4q5ww65rg27qxr-5010.preview.app.github.dev/api/hero HTTP/1.1
+POST https://{{$processEnv CODESPACE_NAME}}-5010.{{$processEnv GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}}/api/hero HTTP/1.1
 content-type: application/json
 
 {
@@ -25,7 +22,7 @@ content-type: application/json
 }
 
 ###
-POST https://0gis0-ominous-telegram-4q5ww65rg27qxr-5010.preview.app.github.dev/api/hero HTTP/1.1
+POST https://{{$processEnv CODESPACE_NAME}}-5010.{{$processEnv GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}}/api/hero HTTP/1.1
 content-type: application/json
 
 {
@@ -35,7 +32,7 @@ content-type: application/json
 }
 
 ###
-POST https://0gis0-ominous-telegram-4q5ww65rg27qxr-5010.preview.app.github.dev/api/hero HTTP/1.1
+POST https://{{$processEnv CODESPACE_NAME}}-5010.{{$processEnv GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}}/api/hero HTTP/1.1
 content-type: application/json
 
 {
@@ -45,7 +42,7 @@ content-type: application/json
 }
 
 ###
-POST https://0gis0-ominous-telegram-4q5ww65rg27qxr-5010.preview.app.github.dev/api/hero HTTP/1.1
+POST https://{{$processEnv CODESPACE_NAME}}-5010.{{$processEnv GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}}/api/hero HTTP/1.1
 content-type: application/json
 
 {
@@ -55,7 +52,7 @@ content-type: application/json
 }
 
 ###
-POST https://0gis0-ominous-telegram-4q5ww65rg27qxr-5010.preview.app.github.dev/api/hero HTTP/1.1
+POST https://{{$processEnv CODESPACE_NAME}}-5010.{{$processEnv GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}}/api/hero HTTP/1.1
 content-type: application/json
 
 {
@@ -65,7 +62,7 @@ content-type: application/json
 }
 
 ###
-POST https://0gis0-ominous-telegram-4q5ww65rg27qxr-5010.preview.app.github.dev/api/hero HTTP/1.1
+POST https://{{$processEnv CODESPACE_NAME}}-5010.{{$processEnv GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}}/api/hero HTTP/1.1
 content-type: application/json
 
 {
