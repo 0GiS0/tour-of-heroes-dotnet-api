@@ -1,5 +1,7 @@
 GET https://0gis0-ominous-telegram-4q5ww65rg27qxr-5010.preview.app.github.dev/api/hero HTTP/1.1
 
+GET {{$processEnv [%]GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}}/api/hero HTTP/1.1
+
 ###
 POST https://0gis0-ominous-telegram-4q5ww65rg27qxr-5010.preview.app.github.dev/api/hero HTTP/1.1
 content-type: application/json
