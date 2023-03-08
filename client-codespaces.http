@@ -4,6 +4,7 @@ X-Github-Token: {{$processEnv GITHUB_TOKEN}}
 ###
 POST https://{{$processEnv CODESPACE_NAME}}-5010.{{$processEnv GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}}/api/hero HTTP/1.1
 content-type: application/json
+X-Github-Token: {{$processEnv GITHUB_TOKEN}}
 
 {
     "name": "Arrow",
@@ -14,6 +15,7 @@ content-type: application/json
 ###
 POST https://{{$processEnv CODESPACE_NAME}}-5010.{{$processEnv GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}}/api/hero HTTP/1.1
 content-type: application/json
+X-Github-Token: {{$processEnv GITHUB_TOKEN}}
 
 {
     "name": "Batman",
@@ -24,6 +26,7 @@ content-type: application/json
 ###
 POST https://{{$processEnv CODESPACE_NAME}}-5010.{{$processEnv GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}}/api/hero HTTP/1.1
 content-type: application/json
+X-Github-Token: {{$processEnv GITHUB_TOKEN}}
 
 {
     "name": "Captain America",
@@ -34,6 +37,7 @@ content-type: application/json
 ###
 POST https://{{$processEnv CODESPACE_NAME}}-5010.{{$processEnv GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}}/api/hero HTTP/1.1
 content-type: application/json
+X-Github-Token: {{$processEnv GITHUB_TOKEN}}
 
 {
     "name": "Daredevil",
@@ -44,6 +48,7 @@ content-type: application/json
 ###
 POST https://{{$processEnv CODESPACE_NAME}}-5010.{{$processEnv GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}}/api/hero HTTP/1.1
 content-type: application/json
+X-Github-Token: {{$processEnv GITHUB_TOKEN}}
 
 {
     "name": "Hulk",
@@ -54,6 +59,7 @@ content-type: application/json
 ###
 POST https://{{$processEnv CODESPACE_NAME}}-5010.{{$processEnv GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}}/api/hero HTTP/1.1
 content-type: application/json
+X-Github-Token: {{$processEnv GITHUB_TOKEN}}
 
 {
     "name": "Iron Man",
@@ -64,6 +70,7 @@ content-type: application/json
 ###
 POST https://{{$processEnv CODESPACE_NAME}}-5010.{{$processEnv GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}}/api/hero HTTP/1.1
 content-type: application/json
+X-Github-Token: {{$processEnv GITHUB_TOKEN}}
 
 {
     "name": "Spider Man",
