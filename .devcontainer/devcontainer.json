@@ -50,7 +50,7 @@
 	// 	}
 	// },
 	// postCreateCommand.sh parameters: $1=SA password, $2=dacpac path, $3=sql script(s) path
-	"postCreateCommand": "bash .devcontainer/mssql/postCreateCommand.sh 'P@ssw0rd' './bin/Debug/' './.devcontainer/mssql/'",
+	"postCreateCommand": "bash .devcontainer/mssql/postCreateCommand.sh 'P@ssword' './bin/Debug/' './.devcontainer/mssql/'",
 	"features": {
 		"ghcr.io/devcontainers-contrib/features/curl-apt-get:1": {},
 		"ghcr.io/devcontainers-contrib/features/terraform-asdf:2": {
