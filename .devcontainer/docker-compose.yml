@@ -25,7 +25,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2019-latest
     restart: unless-stopped
     environment:
-      SA_PASSWORD: P@ssw0rd
+      SA_PASSWORD: P@ssword
       ACCEPT_EULA: Y
 
     # Add "forwardPorts": ["1433"] to **devcontainer.json** to forward MSSQL locally.
