@@ -31,7 +31,8 @@ namespace tour_of_heroes_api
                     .AllowAnyHeader());
             });
 
-            services.AddControllers();
+            services.AddControllers()
+            .AddXmlSerializerFormatters(); // add XML support
 
             // services.AddDbContext<HeroContext>(opt => opt.UseInMemoryDatabase("Heroes"));
             services.AddDbContext<HeroContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
