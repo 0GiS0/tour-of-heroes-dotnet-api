@@ -1,2 +1,2 @@
-CREATE DATABASE ApplicationDB;
-GO
+-- CREATE DATABASE ApplicationDB;
+-- GO
