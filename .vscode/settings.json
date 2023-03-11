@@ -1,6 +1,4 @@
 {
     "appService.preDeployTask": "publish-release",
-    "appService.deploySubpath": "bin/Release/net5.0/publish",
-    "appService.defaultWebAppToDeploy": "None",
-    "sarif-viewer.connectToGithubCodeScanning": "on"
+    "appService.deploySubpath": "bin/Release/net7.0/publish",
 }
