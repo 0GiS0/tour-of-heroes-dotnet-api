@@ -2,9 +2,7 @@ name: GitHub Packages demo
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches: [app-insights]
 
 jobs:
   build:   
@@ -32,4 +30,4 @@ jobs:
           # platforms: linux/amd64,linux/arm64 https://github.com/dotnet/core/blob/main/release-notes/7.0/supported-os.md#qemu https://github.com/NuGet/Home/issues/12227 https://github.com/dotnet/sdk/issues/28971
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/0gis0/tour-of-heroes-dotnet-api/tour-of-heroes-api:${{ steps.vars.outputs.tag }}
+          tags: ghcr.io/0gis0/tour-of-heroes-dotnet-api/tour-of-heroes-api-insights:${{ steps.vars.outputs.tag }}

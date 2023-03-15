@@ -92,6 +92,20 @@ resource "azurerm_windows_web_app" "web" {
   }
 }
 
+# Application Insights
+resource "azurerm_application_insights" "app_insights"{
+  name = "tour-of-heroes-api-insights"
+  location = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  application_type = "web"
+}
+
+output "instrumentation_key" {
+  value = azurerm_application_insights.app_insights.instrumentation_key
+  sensitive = true
+}
+
 # Create Web App slot
 resource "azurerm_windows_web_app_slot" "web" {
   name = "staging"

@@ -52,16 +52,16 @@
 	// postCreateCommand.sh parameters: $1=SA password, $2=dacpac path, $3=sql script(s) path
 	"postCreateCommand": "bash .devcontainer/mssql/postCreateCommand.sh 'P@ssword' './bin/Debug/' './.devcontainer/mssql/'",
 	"features": {
-		"ghcr.io/devcontainers-contrib/features/curl-apt-get:1": {},
-		"ghcr.io/devcontainers-contrib/features/terraform-asdf:2": {
-			"version": "latest"
-		},
-		"ghcr.io/devcontainers-contrib/features/terrascan:1": {
-			"version": "latest"
-		},
-		"ghcr.io/devcontainers/features/azure-cli:1": {
-			"version": "latest"
-		}
+		// "ghcr.io/devcontainers-contrib/features/curl-apt-get:1": {},
+		// "ghcr.io/devcontainers-contrib/features/terraform-asdf:2": {
+		// 	"version": "latest"
+		// },
+		// "ghcr.io/devcontainers-contrib/features/terrascan:1": {
+		// 	"version": "latest"
+		// },
+		// "ghcr.io/devcontainers/features/azure-cli:1": {
+		// 	"version": "latest"
+		// }
 	}
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"

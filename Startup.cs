@@ -23,6 +23,8 @@ namespace tour_of_heroes_api
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddApplicationInsightsTelemetry(); // Add Application Insights
+
             services.AddCors(options =>
             {
                 options.AddPolicy(CorsPolicy,
@@ -33,6 +35,7 @@ namespace tour_of_heroes_api
 
             services.AddControllers()
             .AddXmlSerializerFormatters(); // add XML support
+           
 
             // services.AddDbContext<HeroContext>(opt => opt.UseInMemoryDatabase("Heroes"));
             services.AddDbContext<HeroContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
