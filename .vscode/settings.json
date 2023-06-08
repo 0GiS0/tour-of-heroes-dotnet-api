@@ -1,4 +1,5 @@
 {
     "appService.preDeployTask": "publish-release",
     "appService.deploySubpath": "bin/Release/net7.0/publish",
+    "dotnet.defaultSolution": "tour-of-heroes-api.sln",
 }
