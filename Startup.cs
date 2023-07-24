@@ -53,7 +53,7 @@ namespace tour_of_heroes_api
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "tour_of_heroes_api v1"));
             // }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
