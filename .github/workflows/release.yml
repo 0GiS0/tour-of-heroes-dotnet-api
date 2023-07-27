@@ -15,7 +15,7 @@ jobs:
       - run: dotnet build --configuration Release
       - run: ls -la
       - name: Zip dist
-        run: cd tour-of-heroes-dotnet-api/bin/Release/net7.0/ ; zip -r ../../drop.zip . * ; cd ../../
+        run: cd bin/Release/net7.0/ ; zip -r ../../drop.zip . * ; cd ../../
       - name: Check package version
         uses: technote-space/package-version-check-action@v1
       - name: Build changelog
