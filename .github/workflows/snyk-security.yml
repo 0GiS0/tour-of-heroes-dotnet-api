@@ -49,7 +49,8 @@ jobs:
         #- uses: actions/setup-node@v3
         #  with:
         #    node-version: 16         
-
+      - name: Create ${{env.SARIF_FOLDER}} directory
+        run: mkdir ${{env.SARIF_FOLDER}}
         # Runs Snyk Infrastructure as Code (IaC) analysis and uploads result to Snyk.
         # Use || true to not fail the pipeline.
       - name: Snyk IaC test and report
