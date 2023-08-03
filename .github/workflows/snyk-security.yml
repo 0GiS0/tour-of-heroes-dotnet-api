@@ -29,6 +29,9 @@ permissions:
 
 jobs:
   snyk:
+    env:
+      SARIF_FOLDER: sarif-results
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     permissions:
       contents: read # for actions/checkout to fetch code
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
@@ -45,35 +48,16 @@ jobs:
         # For example for Node
         #- uses: actions/setup-node@v3
         #  with:
-        #    node-version: 16
-
-        env:
-          # This is where you will need to introduce the Snyk API token created with your Snyk account
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-        # Runs Snyk Code (SAST) analysis and uploads result into GitHub.
-        # Use || true to not fail the pipeline
-      - name: Snyk Code test
-        run: snyk code test --sarif > snyk-code.sarif # || true
-
-        # Runs Snyk Open Source (SCA) analysis and uploads result to Snyk.
-      - name: Snyk Open Source monitor
-        run: snyk monitor --all-projects
+        #    node-version: 16         
 
         # Runs Snyk Infrastructure as Code (IaC) analysis and uploads result to Snyk.
         # Use || true to not fail the pipeline.
       - name: Snyk IaC test and report
-        run: snyk iac test --report # || true
-
-        # Build the docker image for testing
-      - name: Build a Docker image
-        run: docker build -t tour-of-heroes-dotnet-api .
-        # Runs Snyk Container (Container and SCA) analysis and uploads result to Snyk.
-      - name: Snyk Container monitor
-        run: snyk container monitor your/image-to-test --file=Dockerfile
+        run:  snyk iac test --sarif > ../${{env.SARIF_FOLDER}}/snyk-iac.sarif || true       
+        working-directory: ./terraform
 
         # Push the Snyk Code results into GitHub Code Scanning tab
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: snyk-code.sarif
+          sarif_file: ${{env.SARIF_FOLDER}}
