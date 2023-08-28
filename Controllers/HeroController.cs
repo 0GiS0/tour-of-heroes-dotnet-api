@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tour_of_heroes_api.Models;
@@ -25,11 +24,14 @@ namespace tour_of_heroes_api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Hero>>> GetHeroes()
         {
+            // Just for demo purposes 🤓
+            var hash = MD5.Create();
+
             return await _context.Heroes.ToListAsync();
         }
 
         // GET: api/Hero/5
-        [HttpGet("{id}")]
+                [HttpGet("{id}")]
         public async Task<ActionResult<Hero>> GetHero(int id)
         {
             var hero = await _context.Heroes.FindAsync(id);
