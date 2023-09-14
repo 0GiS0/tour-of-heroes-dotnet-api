@@ -16,16 +16,22 @@ jobs:
       contents: read
       security-events: write
     uses: 0GiS0/scan-tf-vulnerabilities/.github/workflows/checkov.yaml@main
+    with:
+      working-directory: terraform
   trivy:
     permissions:
       contents: read
       security-events: write
     uses: 0GiS0/scan-tf-vulnerabilities/.github/workflows/trivy.yaml@main
+    with:
+      working-directory: terraform
   terrascan:
     permissions:
       contents: read
       security-events: write
     uses: 0GiS0/scan-tf-vulnerabilities/.github/workflows/terrascan.yaml@main
+    with:
+      working-directory: terraform
   snyk:
     permissions:
       contents: read
