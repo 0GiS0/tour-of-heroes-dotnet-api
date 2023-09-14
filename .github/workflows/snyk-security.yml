@@ -1,4 +1,4 @@
-name: Snyk Security
+name: IaC scans
 
 on:
   push:
