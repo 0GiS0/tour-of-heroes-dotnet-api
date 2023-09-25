@@ -1,0 +1,37 @@
+name: Docker scans
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - ".ado/**"
+      - "README.md"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  checkov:
+    permissions:
+      contents: read
+      security-events: write
+    uses: 0GiS0/scan-docker-vulnerabilities/.github/workflows/checkov.yaml@main
+  trivy:
+    permissions:
+      contents: read
+      security-events: write
+    uses: 0GiS0/scan-docker-vulnerabilities/.github/workflows/trivy.yaml@main
+  grype:
+    permissions:
+      contents: read
+      security-events: write
+    uses: 0GiS0/scan-docker-vulnerabilities/.github/workflows/grype.yaml@main
+  snyk:
+    permissions:
+      contents: read
+      security-events: write
+    uses: 0GiS0/scan-docker-vulnerabilities/.github/workflows/snyk.yaml@main
+    secrets:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
