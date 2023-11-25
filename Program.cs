@@ -40,6 +40,7 @@ otel.WithTracing(tracing =>
 {
     tracing.AddAspNetCoreInstrumentation();
     tracing.AddHttpClientInstrumentation();
+    tracing.AddSqlClientInstrumentation();
     //tracing.AddSource(greeterActivitySource.Name);
     if (tracingOtlpEndpoint != null)
     {
