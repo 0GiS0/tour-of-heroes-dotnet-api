@@ -24,7 +24,8 @@
 						"password": "P@ssword",
 						"emptyPasswordInput": false,
 						"savePassword": false,
-						"profileName": "mssql-container"
+						"profileName": "mssql-container",
+						"trustServerCertificate": true
 					}
 				]
 			},
@@ -36,7 +37,9 @@
 				"humao.rest-client",
 				"hashicorp.terraform",
 				"ms-azuretools.vscode-docker",
-				"redhat.vscode-yaml"
+				"redhat.vscode-yaml",
+				"GitHub.copilot",
+				"GitHub.copilot-chat"
 			]
 		}
 	},
