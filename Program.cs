@@ -19,6 +19,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // Open Telemetry configuration
 var tracingOtlpEndpoint = builder.Configuration["OTLP_ENDPOINT_URL"];
+var zipKinEndpoint = builder.Configuration["ZIPKIN_ENDPOINT_URL"];
 var otel = builder.Services.AddOpenTelemetry();
 
 // Configure OpenTelemetry Resources with the application name
@@ -48,6 +49,18 @@ otel.WithTracing(tracing =>
          {
              otlpOptions.Endpoint = new Uri(tracingOtlpEndpoint);
          });
+    }
+    else
+    {
+        tracing.AddConsoleExporter();
+    }
+
+    if(zipKinEndpoint != null)
+    {
+        tracing.AddZipkinExporter(zipkinOptions =>
+        {
+            zipkinOptions.Endpoint = new Uri($"{zipKinEndpoint}/api/v2/spans");
+        });
     }
     else
     {
