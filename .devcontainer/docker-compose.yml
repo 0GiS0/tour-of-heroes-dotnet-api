@@ -78,6 +78,7 @@ services:
     networks:
       - observability  
 
+  # https://opentelemetry.io/docs/collector/installation/
   otel-collector:
     image: otel/opentelemetry-collector-contrib:0.91.0
     command: --config /etc/otelcol/otel-collector-config.yml
