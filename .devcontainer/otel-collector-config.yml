@@ -5,6 +5,18 @@ receivers:
       grpc:
       http:
 
+################################ Receivers ##################################################################################################
+#                                                                                                                                           #
+# postgresql riak wavefront webhookevent zookeeper couchdb jaeger vcenter windowsperfcounters journald solace                               #
+# collectd file azuremonitor nsxt apachespark awscloudwatch httpcheck memcached oracledb udplog chrony cloudflare expvar googlecloudspanner  #
+# podman_stats sqlquery tcplog snmp awsecscontainermetrics azureblob kafkametrics kubeletstats loki rabbitmq redis k8s_events k8sobjects     #
+# docker_stats influxdb iis opencensus otlpjsonfile purefb apache bigip syslog pulsar sqlserver nginx kafka mongodb windowseventlog          # 
+# awscontainerinsightreceiver elasticsearch filelog aerospike awsxray filestats hostmetrics skywalking azureeventhub carbon mysql            #   
+# receiver_creator sapm haproxy mongodbatlas snowflake sshcheck statsd k8s_cluster prometheus cloudfoundry flinkmetrics jmx signalfx         #
+# prometheus_simple otlp awsfirehose fluentforward googlecloudpubsub purefa splunk_hec zipkin active_directory_ds datadog                    #       
+#                                                                                                                                            #              
+##############################################################################################################################################
+
 # Exporters send data to one or more backends or destinations
 exporters:
   debug:
@@ -19,6 +31,15 @@ exporters:
     endpoint: http://loki:3100/loki/api/v1/push
   azuremonitor:
     connection_string: "<INSTRUMENTATION_KEY>"
+
+############################# Exporters #######################################################################################################
+#                                                                                                                                             #
+# prometheus otlp alibabacloud_logservice azuredataexplorer carbon clickhouse logicmonitor mezmo debug logging awsemf loadbalancing           #
+# syslog dataset file googlemanagedprometheus influxdb signalfx sumologic cassandra dynatrace googlecloud logzio pulsar otlphttp awsxray      #
+# elasticsearch honeycombmarker kafka sentry zipkin awscloudwatchlogs instana loki skywalking splunk_hec awskinesis awss3 azuremonitor        # 
+# datadog f5cloud googlecloudpubsub prometheusremotewrite tanzuobservability tencentcloud_logservice coralogix opencensus sapm                #
+#                                                                                                                                             #  
+###############################################################################################################################################
  
 # A connector acts as an exporter to one pipeline and a receiver to another
 connectors:
