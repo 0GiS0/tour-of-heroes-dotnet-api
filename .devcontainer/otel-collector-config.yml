@@ -20,13 +20,14 @@ exporters:
   azuremonitor:
     connection_string: "<INSTRUMENTATION_KEY>"
  
-
+# A connector acts as an exporter to one pipeline and a receiver to another
 connectors:
   spanmetrics:
     histogram:
       explicit:
         buckets: [ 5ms, 10ms, 25ms, 50ms, 100ms, 250ms, 500ms, 1000ms ]
 
+# Processors are used to transform data
 processors:
   resource:
     attributes:
@@ -37,6 +38,7 @@ processors:
         key: loki.resource.labels
         value: service_name
 
+# Service pipelines define the flow of data through the collector
 service:
   pipelines:
     traces:
