@@ -1,3 +1,4 @@
+# https://opentelemetry.io/docs/collector/configuration/
 receivers:
   otlp:
     protocols:
