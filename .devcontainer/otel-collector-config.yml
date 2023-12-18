@@ -7,14 +7,14 @@ receivers:
 
 # Exporters send data to one or more backends or destinations
 exporters:
+  debug:
+    # verbosity: detailed
   prometheus:
     endpoint: "0.0.0.0:8889"
-
   otlp:
     endpoint: "jaeger:4317"
     tls:
       insecure: true
-
   loki:
     endpoint: http://loki:3100/loki/api/v1/push
 
@@ -40,13 +40,23 @@ processors:
 
 service:
   pipelines:
+    # traces:
+    #   receivers: [zipkin, otlp ]
+    #   exporters: [ debug, otlp, spanmetrics ]
+    # metrics:
+    #   receivers: [ spanmetrics ]
+    #   exporters: [ debug, prometheus ]
+    # logs:
+    #   receivers: [ otlp ]
+    #   processors: [ resource ]
+    #   exporters: [ debug, loki ]
     traces:
       receivers: [ otlp ]
-      exporters: [ otlp, spanmetrics ]
+      exporters: [ debug, otlp, spanmetrics ]
     metrics:
       receivers: [ spanmetrics ]
-      exporters: [ prometheus ]
+      exporters: [ debug, prometheus ]
     logs:
       receivers: [ otlp ]
       processors: [ resource ]
-      exporters: [ loki ]
+      exporters: [ debug, loki ]

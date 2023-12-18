@@ -35,7 +35,6 @@ builder.Logging.AddOpenTelemetry(options =>
     options.SetResourceBuilder(resourceBuilder);
 
     // options.AddConsoleExporter();
-
     options.AddOtlpExporter();
 
 });
@@ -51,8 +50,11 @@ builder.Services.AddOpenTelemetry()
     tracing.AddHttpClientInstrumentation();
     // tracing.AddSqlClientInstrumentation();
     tracing.AddEntityFrameworkCoreInstrumentation();
-    // tracing.AddConsoleExporter();
+    
     tracing.AddOtlpExporter();
+
+    // tracing.AddConsoleExporter();
+
 })
 .WithMetrics(metrics =>
 {
@@ -61,7 +63,11 @@ builder.Services.AddOpenTelemetry()
     metrics.AddProcessInstrumentation();
     metrics.AddRuntimeInstrumentation();
     // metrics.AddConsoleExporter();
+    
     metrics.AddPrometheusExporter();
+
+    metrics.AddOtlpExporter();
+
 });
 
 builder.Services.Configure<AspNetCoreInstrumentationOptions>(options =>

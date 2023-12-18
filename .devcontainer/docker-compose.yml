@@ -1,28 +1,21 @@
-version: "3.5"
+version: "3.8"
 
 services:
   app:
-    # build: 
-    #   context: .
-    #   dockerfile: Dockerfile
+
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
       - ../..:/workspaces:cached
-
     command: sleep infinity
     networks:
     - observability
     environment:
       OTEL_SERVICE_NAME: tour-of-heroes-api
       OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
-      # OTEL_EXPORTER_JAEGER_ENDPOINT: http://jaeger:14268/api/traces
-      # OTEL_EXPORTER_JAEGER_AGENT_HOST: jaeger
-      # OTEL_EXPORTER_JAEGER_AGENT_PORT: 6831
-      # APPLICATIONINSIGHTS_CONNECTION_STRING: <INSTRUMENTATION_KEY>
     ports:
-    - "127.0.0.1:5010:5010"
+    - "5010:5010"
   
   db:    
     image:  mcr.microsoft.com/azure-sql-edge
@@ -36,7 +29,7 @@ services:
   jaeger:
     image: jaegertracing/all-in-one:latest
     ports:
-      - "127.0.0.1:16686:16686" # Jaeger UI
+      - "16686:16686" # Jaeger UI
     command: --query.ui-config=/etc/jaeger/jaeger-ui.json --collector.otlp.enabled=true --prometheus.server-url=http://prometheus:9090 --prometheus.query.support-spanmetrics-connector=true
     environment:      
       METRICS_STORAGE_TYPE: "prometheus"      
@@ -50,7 +43,7 @@ services:
   prometheus:
     image: prom/prometheus   
     ports:
-      - "127.0.0.1:9090:9090"
+      - "9090:9090"
     networks:
       - observability
     volumes:
@@ -60,7 +53,7 @@ services:
     image: grafana/loki:latest
     command: -config.file=/mnt/config/loki-config.yml
     ports:
-      - "127.0.0.1:3100:3100"
+      - "3100:3100"
     networks:
       - observability
     volumes:
@@ -69,7 +62,7 @@ services:
   grafana:
     image: grafana/grafana
     ports:
-      - "127.0.0.1:3000:3000"
+      - "3000:3000"
     environment:
       GF_AUTH_ANONYMOUS_ENABLED: true
       GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
@@ -87,11 +80,9 @@ services:
     volumes:
       - ./otel-collector-config.yml:/etc/otelcol/otel-collector-config.yml
     ports:
-     - "127.0.0.1:4317:4317"
+     - "4317:4317"
     networks:
       - observability
-    depends_on:
-      - jaeger
 
   fake-calls:
     image: alpine/curl:latest
