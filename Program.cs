@@ -43,7 +43,7 @@ builder.Logging.AddOpenTelemetry(options =>
 builder.Services.AddHttpLogging(o => o.LoggingFields = HttpLoggingFields.All);
 
 builder.Services.AddOpenTelemetry()
-// .UseAzureMonitor()
+// .UseAzureMonitor() //https://learn.microsoft.com/es-es/azure/azure-monitor/app/opentelemetry-configuration?tabs=aspnetcore
 .ConfigureResource(resource => resource.AddService(builder.Configuration["OTEL_SERVICE_NAME"]))
 .WithTracing(tracing =>
 {
