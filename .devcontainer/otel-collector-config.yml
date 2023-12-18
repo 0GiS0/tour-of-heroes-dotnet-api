@@ -5,6 +5,7 @@ receivers:
       grpc:
       http:
 
+# Exporters send data to one or more backends or destinations
 exporters:
   prometheus:
     endpoint: "0.0.0.0:8889"
@@ -16,6 +17,10 @@ exporters:
 
   loki:
     endpoint: http://loki:3100/loki/api/v1/push
+
+  # azuremonitor:
+  #   connection_string: "InstrumentationKey=a7c817bc-3165-4afc-9c73-8985c04f4b48;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/"
+ 
 
 connectors:
   spanmetrics:
