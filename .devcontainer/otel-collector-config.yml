@@ -29,8 +29,8 @@ exporters:
       insecure: true
   loki:
     endpoint: http://loki:3100/loki/api/v1/push
-  azuremonitor:
-    connection_string: "<INSTRUMENTATION_KEY>"
+  # azuremonitor:
+  #   # connection_string: "<INSTRUMENTATION_KEY>"
 
 ############################# Exporters #######################################################################################################
 #                                                                                                                                             #
@@ -59,17 +59,20 @@ processors:
       - action: insert
         key: loki.resource.labels
         value: service_name
+      - action: insert
+        key: hello
+        value: hello world 👋🏻
 
 # Service pipelines define the flow of data through the collector
 service:
   pipelines:
     traces:
       receivers: [ otlp ]
-      exporters: [ debug, otlp, spanmetrics, azuremonitor ]
+      exporters: [ debug, otlp, spanmetrics ]
     metrics:
       receivers: [ spanmetrics ]
-      exporters: [ debug, prometheus, azuremonitor ]
+      exporters: [ debug, prometheus ]
     logs:
       receivers: [ otlp ]
       processors: [ resource ]
-      exporters: [ debug, loki, azuremonitor ]
+      exporters: [ debug, loki ]
