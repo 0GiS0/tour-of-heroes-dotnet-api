@@ -17,9 +17,8 @@ exporters:
       insecure: true
   loki:
     endpoint: http://loki:3100/loki/api/v1/push
-
-  # azuremonitor:
-  #   connection_string: "InstrumentationKey=a7c817bc-3165-4afc-9c73-8985c04f4b48;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/"
+  azuremonitor:
+    connection_string: "<INSTRUMENTATION_KEY>"
  
 
 connectors:
@@ -40,23 +39,13 @@ processors:
 
 service:
   pipelines:
-    # traces:
-    #   receivers: [zipkin, otlp ]
-    #   exporters: [ debug, otlp, spanmetrics ]
-    # metrics:
-    #   receivers: [ spanmetrics ]
-    #   exporters: [ debug, prometheus ]
-    # logs:
-    #   receivers: [ otlp ]
-    #   processors: [ resource ]
-    #   exporters: [ debug, loki ]
     traces:
       receivers: [ otlp ]
-      exporters: [ debug, otlp, spanmetrics ]
+      exporters: [ debug, otlp, spanmetrics, azuremonitor ]
     metrics:
       receivers: [ spanmetrics ]
-      exporters: [ debug, prometheus ]
+      exporters: [ debug, prometheus, azuremonitor ]
     logs:
       receivers: [ otlp ]
       processors: [ resource ]
-      exporters: [ debug, loki ]
+      exporters: [ debug, loki, azuremonitor ]
