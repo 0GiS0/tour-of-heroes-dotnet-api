@@ -6,7 +6,6 @@ using tour_of_heroes_api.Models;
 using Microsoft.AspNetCore.HttpLogging;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Instrumentation.AspNetCore;
-using Azure.Monitor.OpenTelemetry.AspNetCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,7 +34,7 @@ builder.Logging.AddOpenTelemetry(options =>
     options.SetResourceBuilder(resourceBuilder);
 
     // options.AddConsoleExporter();
-    options.AddOtlpExporter();
+    options.AddOtlpExporter(); //This will, by default, send traces using gRPC to http://localhost:4317
 
 });
 
@@ -64,6 +63,7 @@ builder.Services.AddOpenTelemetry()
     metrics.AddRuntimeInstrumentation();
     // metrics.AddConsoleExporter();
     
+    // https://opentelemetry.io/docs/instrumentation/net/exporters/#prometheus-experimental
     metrics.AddPrometheusExporter();
 
     metrics.AddOtlpExporter();
