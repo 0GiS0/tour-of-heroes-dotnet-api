@@ -20,7 +20,8 @@
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "ASPNETCORE_URLS": "http://localhost:5010"
+                "ASPNETCORE_URLS": "http://localhost:5010",
+                "OTEL_SERVICE_NAME": "tour-of-heroes-api"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"

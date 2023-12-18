@@ -1,0 +1,27 @@
+global:
+  scrape_interval:     10s
+  evaluation_interval: 10s
+
+scrape_configs:
+  # - job_name: "tour-of-heroes-api"
+  #   static_configs:
+  #     - targets: ["app:5010"] # Replace with actual container hostname and port
+
+  # # - job_name: "tour-of-heroes-angular"
+  # #   static_configs:
+  # #     - targets: ["nginx-exporter:9113"] # Replace with actual container hostname and port
+  - job_name: aggregated-trace-metrics
+    static_configs:
+      - targets:
+          - otel-collector:8889
+
+  - job_name: jaeger
+    static_configs:
+      - targets:
+          - jaeger:14269
+
+  - job_name: services
+    static_configs:
+      - targets:
+          # - proxy-service:80
+          - app:5010

@@ -1,72 +1,75 @@
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using tour_of_heroes_api.Models;
+using Microsoft.AspNetCore.HttpLogging;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Instrumentation.AspNetCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<IHeroRepository, HeroRepository>();
-builder.Services.AddControllers();builder.Services.AddDbContext<HeroContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddControllers(); builder.Services.AddDbContext<HeroContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "tour_of_heroes_api", Version = "v1" });
 });
 
-// Open Telemetry configuration
-var tracingOtlpEndpoint = builder.Configuration["OTLP_ENDPOINT_URL"];
-var zipKinEndpoint = builder.Configuration["ZIPKIN_ENDPOINT_URL"];
-var otel = builder.Services.AddOpenTelemetry();
 
-// Configure OpenTelemetry Resources with the application name
-otel.ConfigureResource(resource => resource
-    .AddService(serviceName: builder.Environment.ApplicationName));
+/************************************************************************************************
+********************************** Open Telemetry configuration *********************************
+*********** https://grafana.com/grafana/dashboards/17706-asp-net-otel-metrics/ ******************
+************************************************************************************************/
 
-// Add Metrics for ASP.NET Core and our custom metrics and export to Prometheus
-otel.WithMetrics(metrics => metrics
-    // Metrics provider from OpenTelemetry
-    .AddAspNetCoreInstrumentation()
-    //.AddMeter(greeterMeter.Name)
-    // Metrics provides by ASP.NET Core in .NET 8
-    .AddMeter("Microsoft.AspNetCore.Hosting")
-    .AddMeter("Microsoft.AspNetCore.Server.Kestrel")
-    .AddPrometheusExporter());
+builder.Logging.AddOpenTelemetry(options =>
+{
+    options.IncludeScopes = true;
+    options.IncludeFormattedMessage = true;
 
-// Add Tracing for ASP.NET Core and our custom ActivitySource and export to Jaeger
-otel.WithTracing(tracing =>
+    var resourceBuilder = ResourceBuilder.CreateDefault();
+    resourceBuilder.AddService(builder.Configuration["OTEL_SERVICE_NAME"]);
+    options.SetResourceBuilder(resourceBuilder);
+
+    options.AddConsoleExporter();
+
+    options.AddOtlpExporter();
+
+});
+
+builder.Services.AddHttpLogging(o => o.LoggingFields = HttpLoggingFields.All);
+
+builder.Services.AddOpenTelemetry()
+.ConfigureResource(resource => resource.AddService(builder.Configuration["OTEL_SERVICE_NAME"]))
+.WithTracing(tracing =>
 {
     tracing.AddAspNetCoreInstrumentation();
     tracing.AddHttpClientInstrumentation();
     tracing.AddSqlClientInstrumentation();
-    //tracing.AddSource(greeterActivitySource.Name);
-    if (tracingOtlpEndpoint != null)
-    {
-        tracing.AddOtlpExporter(otlpOptions =>
-         {
-             otlpOptions.Endpoint = new Uri(tracingOtlpEndpoint);
-         });
-    }
-    else
-    {
-        tracing.AddConsoleExporter();
-    }
-
-    if(zipKinEndpoint != null)
-    {
-        tracing.AddZipkinExporter(zipkinOptions =>
-        {
-            zipkinOptions.Endpoint = new Uri($"{zipKinEndpoint}/api/v2/spans");
-        });
-    }
-    else
-    {
-        tracing.AddConsoleExporter();
-    }
+    // tracing.AddEntityFrameworkCoreInstrumentation();
+    tracing.AddConsoleExporter();
+    tracing.AddOtlpExporter();
+})
+.WithMetrics(metrics =>
+{
+    metrics.AddAspNetCoreInstrumentation();
+    metrics.AddHttpClientInstrumentation();
+    metrics.AddProcessInstrumentation();
+    metrics.AddRuntimeInstrumentation();
+    metrics.AddConsoleExporter();
+    metrics.AddPrometheusExporter();
 });
+
+builder.Services.Configure<AspNetCoreInstrumentationOptions>(options =>
+{
+    // Filter out instrumentation of the Prometheus scraping endpoint.
+    options.Filter = ctx => ctx.Request.Path != "/metrics";
+});
+
+
+/************************************************************************************************/
 
 // Add CORS policy
 builder.Services.AddCors(options =>
@@ -81,6 +84,8 @@ var app = builder.Build();
 
 app.UseCors("CorsPolicy");
 
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
@@ -88,6 +93,8 @@ app.MapControllers();
 
 // Configure the Prometheus scraping endpoint
 app.MapPrometheusScrapingEndpoint();
+app.UseHttpLogging();
+app.UseDeveloperExceptionPage();
 
 app.Run();
 
