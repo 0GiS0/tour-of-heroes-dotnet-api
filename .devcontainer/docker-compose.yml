@@ -1,11 +1,13 @@
-version: '3'
+version: "3.5"
 
 services:
   app:
-    build: 
+    # build: 
+    #   context: .
+    #   dockerfile: Dockerfile
+    build:
       context: .
       dockerfile: Dockerfile
-
     volumes:
       - ../..:/workspaces:cached
 
@@ -15,10 +17,10 @@ services:
     environment:
       OTEL_SERVICE_NAME: tour-of-heroes-api
       OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
-      OTEL_EXPORTER_JAEGER_ENDPOINT: http://jaeger:14268/api/traces
-      OTEL_EXPORTER_JAEGER_AGENT_HOST: jaeger
-      OTEL_EXPORTER_JAEGER_AGENT_PORT: 6831
-      APPLICATIONINSIGHTS_CONNECTION_STRING: <INSTRUMENTATION_KEY>
+      # OTEL_EXPORTER_JAEGER_ENDPOINT: http://jaeger:14268/api/traces
+      # OTEL_EXPORTER_JAEGER_AGENT_HOST: jaeger
+      # OTEL_EXPORTER_JAEGER_AGENT_PORT: 6831
+      # APPLICATIONINSIGHTS_CONNECTION_STRING: <INSTRUMENTATION_KEY>
     ports:
     - "127.0.0.1:5010:5010"
   
@@ -90,6 +92,22 @@ services:
       - observability
     depends_on:
       - jaeger
+
+  fake-calls:
+    image: alpine/curl:latest
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        sleep 5
+        while true; do
+          curl -s "http://app:5010/api/hero" || true         
+          sleep 0.5
+        done
+    networks:
+      - observability
+    depends_on:
+      - app
 
 networks:
   observability:

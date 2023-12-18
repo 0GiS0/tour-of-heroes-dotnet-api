@@ -34,9 +34,9 @@ builder.Logging.AddOpenTelemetry(options =>
     resourceBuilder.AddService(builder.Configuration["OTEL_SERVICE_NAME"]);
     options.SetResourceBuilder(resourceBuilder);
 
-    options.AddConsoleExporter();
+    // options.AddConsoleExporter();
 
-    // options.AddOtlpExporter();
+    options.AddOtlpExporter();
 
 });
 
@@ -51,8 +51,8 @@ builder.Services.AddOpenTelemetry()
     tracing.AddHttpClientInstrumentation();
     // tracing.AddSqlClientInstrumentation();
     tracing.AddEntityFrameworkCoreInstrumentation();
-    tracing.AddConsoleExporter();
-    // tracing.AddOtlpExporter();
+    // tracing.AddConsoleExporter();
+    tracing.AddOtlpExporter();
 })
 .WithMetrics(metrics =>
 {
@@ -60,10 +60,8 @@ builder.Services.AddOpenTelemetry()
     metrics.AddHttpClientInstrumentation();
     metrics.AddProcessInstrumentation();
     metrics.AddRuntimeInstrumentation();
-    metrics.AddConsoleExporter();
+    // metrics.AddConsoleExporter();
     metrics.AddPrometheusExporter();
-
-    // metrics.AddOtlpExporter();
 });
 
 builder.Services.Configure<AspNetCoreInstrumentationOptions>(options =>
