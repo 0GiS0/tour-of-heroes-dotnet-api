@@ -6,6 +6,7 @@ using tour_of_heroes_api.Models;
 using Microsoft.AspNetCore.HttpLogging;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Instrumentation.AspNetCore;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,13 +43,14 @@ builder.Logging.AddOpenTelemetry(options =>
 builder.Services.AddHttpLogging(o => o.LoggingFields = HttpLoggingFields.All);
 
 builder.Services.AddOpenTelemetry()
+// .UseAzureMonitor()
 .ConfigureResource(resource => resource.AddService(builder.Configuration["OTEL_SERVICE_NAME"]))
 .WithTracing(tracing =>
 {
     tracing.AddAspNetCoreInstrumentation();
     tracing.AddHttpClientInstrumentation();
-    tracing.AddSqlClientInstrumentation();
-    // tracing.AddEntityFrameworkCoreInstrumentation();
+    // tracing.AddSqlClientInstrumentation();
+    tracing.AddEntityFrameworkCoreInstrumentation();
     tracing.AddConsoleExporter();
     tracing.AddOtlpExporter();
 })
