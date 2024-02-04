@@ -3,6 +3,7 @@ WORKDIR /app
 EXPOSE 5000
 
 ENV ASPNETCORE_URLS=http://+:5000
+ENV OTEL_SERVICE_NAME=tour-of-heroes-api
 
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder
 # For more info, please refer to https://aka.ms/vscode-docker-dotnet-configure-containers
@@ -36,4 +37,13 @@ RUN dotnet publish "tour-of-heroes-api.csproj" -c Release -o /app/publish -r $(c
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+# Install curl
+USER root
+RUN apt-get update && apt-get install -y curl
+USER appuser
+
+HEALTHCHECK --interval=5m --timeout=3s \
+  CMD curl -f http://localhost:5000/api/health || exit 1
+
 ENTRYPOINT ["dotnet", "tour-of-heroes-api.dll"]
