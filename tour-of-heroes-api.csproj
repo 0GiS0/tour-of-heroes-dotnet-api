@@ -17,7 +17,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 
     <!-- OpenTelemetry -->
-    <PackageReference Include="OpenTelemetry" Version="1.6.0" />   
+    <PackageReference Include="OpenTelemetry" Version="1.7.0" />   
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.6.0" />
 
     <!-- Instrumentation -->
@@ -31,7 +31,7 @@
     <!-- Exporters -->
     <PackageReference Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.0.0" />
     <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.6.0" />    
-    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.6.0" />
+    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.7.0" />
     <PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.6.0-rc.1" />
 
 </ItemGroup>
