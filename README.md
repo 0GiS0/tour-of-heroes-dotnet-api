@@ -27,7 +27,7 @@ Si no hay otro archivo, la configuración de la base de datos la coge del llamad
 ```
 {
     "ConnectionStrings": {
-        "DefaultConnection": "Server=localhost,1433;Initial Catalog=heroes;Persist Security Info=False;User ID=sa;Password=Password1!;"
+        "DefaultConnection": "Server=localhost,1433;Initial Catalog=heroes;Persist Security Info=False;User ID=sa;Password=Password1!;Encrypt=False"
     },
     "Logging": {
         "LogLevel": {
@@ -47,7 +47,7 @@ En esta versión podemos recuperar las imágenes de los alter egos, gracias al s
         [HttpGet("alteregopic/{id}")]
         public async Task<ActionResult<Hero>> GetAlterEgoPic(int id)
         {
-            var hero = await _context.Heroes.FirstOrDefaultAsync(h => h.Id == id);
+            var hero = _heroRepository.GetById(id);
 
             if (hero == null)
             {
