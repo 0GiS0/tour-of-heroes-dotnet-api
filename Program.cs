@@ -24,13 +24,15 @@ builder.Services.AddSwaggerGen(c =>
 *********** https://grafana.com/grafana/dashboards/17706-asp-net-otel-metrics/ ******************
 ************************************************************************************************/
 
+string serviceName = builder.Configuration["OTEL_SERVICE_NAME"] ?? "tour_of_heroes_api";
+
 builder.Logging.AddOpenTelemetry(options =>
 {
     options.IncludeScopes = true;
     options.IncludeFormattedMessage = true;
 
     var resourceBuilder = ResourceBuilder.CreateDefault();
-    resourceBuilder.AddService(builder.Configuration["OTEL_SERVICE_NAME"]);
+    resourceBuilder.AddService(serviceName);
     options.SetResourceBuilder(resourceBuilder);
 
     // options.AddConsoleExporter();
@@ -42,7 +44,7 @@ builder.Services.AddHttpLogging(o => o.LoggingFields = HttpLoggingFields.All);
 
 builder.Services.AddOpenTelemetry()
 // .UseAzureMonitor() //https://learn.microsoft.com/es-es/azure/azure-monitor/app/opentelemetry-configuration?tabs=aspnetcore
-.ConfigureResource(resource => resource.AddService(builder.Configuration["OTEL_SERVICE_NAME"]))
+.ConfigureResource(resource => resource.AddService(serviceName))
 .WithTracing(tracing =>
 {
     tracing.AddAspNetCoreInstrumentation();
