@@ -72,13 +72,6 @@ builder.Services.AddOpenTelemetry()
 
 });
 
-builder.Services.Configure<AspNetCoreInstrumentationOptions>(options =>
-{
-    // Filter out instrumentation of the Prometheus scraping endpoint.
-    options.Filter = ctx => ctx.Request.Path != "/metrics";
-});
-
-
 /************************************************************************************************/
 
 // Add CORS policy
