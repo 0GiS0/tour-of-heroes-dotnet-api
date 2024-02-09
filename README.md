@@ -63,3 +63,26 @@ En esta versión de la API para el frontend del [tutorial de AngularJS](https://
         }
 
 ```
+
+En este ejemplo se utiliza Azurite como emulador de Azure Storage para el desarrollo local. Puedes ejecutar Azurite dentro de un contenedor de Docker con el siguiente comando:
+
+```bash
+docker run --name azurite \
+-p 10000:10000 \
+-p 10001:10001 \
+-p 10002:10002 \
+mcr.microsoft.com/azure-storage/azurite
+```
+
+El puerto 10000 es el puerto de Blob, el puerto 10001 es el puerto de Queue y el puerto 10002 es el puerto de Table.
+
+Para que tu aplicación sea consciente de Azurite debes añadir la cadena de conexión en el archivo ***appsettings.Development.json*** con el siguiente contenido:
+
+```json
+{
+  "ConnectionStrings": {
+    "AzureStorage": "UseDevelopmentStorage=true"
+  }
+}
+```
+

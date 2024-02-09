@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Queues;
-using Azure.Storage.Queues.Models;
 using Azure.Storage.Sas;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,10 +13,12 @@ namespace tour_of_heroes_api.Controllers
     public class HeroController : ControllerBase
     {
         private readonly HeroContext _context;
+        private readonly IConfiguration _configuration;
 
-        public HeroController(HeroContext context)
+        public HeroController(HeroContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         // GET: api/Hero
@@ -68,7 +65,7 @@ namespace tour_of_heroes_api.Controllers
                 if (hero.AlterEgo != oldHero.AlterEgo)
                 {
                     // Get the connection string from app settings
-                    string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
+                    string connectionString = _configuration.GetConnectionString("AzureStorage");
 
                     // Instantiate a QueueClient which will be used to create and manipulate the queue
                     var queueClient = new QueueClient(connectionString, "alteregos");
@@ -148,7 +145,7 @@ namespace tour_of_heroes_api.Controllers
             }
 
             //Get image from Azure Storage
-            string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
+            string connectionString = _configuration.GetConnectionString("AzureStorage");
 
             // Create a BlobServiceClient object which will be used to create a container client
             var blobServiceClient = new BlobServiceClient(connectionString);
@@ -171,7 +168,7 @@ namespace tour_of_heroes_api.Controllers
         public ActionResult GetAlterEgoPicSas(string imgName)
         {
             //Get image from Azure Storage
-            string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
+            string connectionString = _configuration.GetConnectionString("AzureStorage");
 
             // Create a BlobServiceClient object which will be used to create a container client
             var blobServiceClient = new BlobServiceClient(connectionString);
@@ -182,14 +179,14 @@ namespace tour_of_heroes_api.Controllers
             //Get blob client
             var blobClient = containerClient.GetBlobClient(imgName);
 
-            var sasBuilder = new BlobSasBuilder()
+            var sasBuilder = new BlobSasBuilder
             {
                 BlobContainerName = "alteregos",
                 BlobName = imgName,
-                Resource = "b"
+                Resource = "b",
+                ExpiresOn = DateTimeOffset.UtcNow.AddMinutes(3)
             };
 
-            sasBuilder.ExpiresOn = DateTimeOffset.UtcNow.AddMinutes(3);
             sasBuilder.SetPermissions(BlobSasPermissions.Read | BlobSasPermissions.Write);
 
             Uri sasUri = blobClient.GenerateSasUri(sasBuilder);
@@ -197,7 +194,7 @@ namespace tour_of_heroes_api.Controllers
             Console.WriteLine($"SAS Uri for blob is: {sasUri}");
 
             //return image
-            return Ok($"{blobServiceClient.Uri}{sasUri.Query.ToString()}");
+            return Ok($"{blobServiceClient.Uri}{sasUri.Query}");
         }
     }
 }
