@@ -9,7 +9,7 @@ public class HeroRepository : IHeroRepository
 
     public IEnumerable<Hero> GetAll() => _context.Heroes.ToList();
 
-    public Hero GetById(int id) => _context.Heroes.FirstOrDefault(h => h.Id == id);
+    public Hero? GetById(int id) => _context.Heroes.FirstOrDefault(h => h.Id == id);
 
     public void Add(Hero hero)
     {
@@ -19,7 +19,11 @@ public class HeroRepository : IHeroRepository
 
     public void Delete(int id)
     {
-        _context.Heroes.Remove(GetById(id));
+        var hero = GetById(id);
+
+        if (hero == null) return;        
+
+        _context.Heroes.Remove(hero);
         _context.SaveChanges();
     }
 
