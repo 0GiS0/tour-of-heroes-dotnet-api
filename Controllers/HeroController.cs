@@ -9,7 +9,6 @@ using Azure.Storage.Sas;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using tour_of_heroes_api.Models;
-using tour_of_heroes_api.Modesl;
 using System.Text.Json;
 
 namespace tour_of_heroes_api.Controllers
