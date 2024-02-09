@@ -17,7 +17,7 @@ public interface IHeroRepository
     /// </summary>
     /// <param name="id">The ID of the hero.</param>
     /// <returns>The hero with the specified ID.</returns>
-    Hero GetById(int id);
+    Hero? GetById(int id);
 
     /// <summary>
     /// Adds a new hero.
