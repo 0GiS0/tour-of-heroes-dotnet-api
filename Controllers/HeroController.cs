@@ -1,8 +1,5 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using tour_of_heroes_api.Models;
-using System.Linq;
 using Azure.Storage.Blobs;
 
 
@@ -10,14 +7,10 @@ namespace tour_of_heroes_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HeroController : ControllerBase
+    public class HeroController(IHeroRepository heroRepository,IConfiguration configuration) : ControllerBase
     {
-
-        private IHeroRepository _heroRepository;
-        public HeroController(IHeroRepository heroRepository)
-        {
-            _heroRepository = heroRepository;
-        }
+        private readonly IHeroRepository _heroRepository = heroRepository;
+        private readonly IConfiguration _configuration = configuration;
 
         // GET: api/Hero
         [HttpGet]
@@ -97,7 +90,7 @@ namespace tour_of_heroes_api.Controllers
             }
 
             //Get image from Azure Storage
-            string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
+            string connectionString = _configuration.GetConnectionString("AzureStorage");
             
             // Create a BlobServiceClient object which will be used to create a container client
             var blobServiceClient = new BlobServiceClient(connectionString);
