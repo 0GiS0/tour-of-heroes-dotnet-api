@@ -35,7 +35,7 @@ builder.Logging.AddOpenTelemetry(options =>
     resourceBuilder.AddService(serviceName);
     options.SetResourceBuilder(resourceBuilder);
 
-    // options.AddConsoleExporter();
+    options.AddConsoleExporter();
     options.AddOtlpExporter(); //This will, by default, send traces using gRPC to http://localhost:4317
 
 });
@@ -54,7 +54,7 @@ builder.Services.AddOpenTelemetry()
     
     tracing.AddOtlpExporter();
 
-    // tracing.AddConsoleExporter();
+    tracing.AddConsoleExporter();
 
 })
 .WithMetrics(metrics =>
@@ -63,7 +63,7 @@ builder.Services.AddOpenTelemetry()
     metrics.AddHttpClientInstrumentation();
     metrics.AddProcessInstrumentation();
     metrics.AddRuntimeInstrumentation();
-    // metrics.AddConsoleExporter();
+    metrics.AddConsoleExporter();
     
     // https://opentelemetry.io/docs/instrumentation/net/exporters/#prometheus-experimental
     metrics.AddPrometheusExporter();
