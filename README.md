@@ -68,6 +68,7 @@ En este ejemplo se utiliza Azurite como emulador de Azure Storage para el desarr
 
 ```bash
 docker run --name azurite \
+-d \
 -p 10000:10000 \
 -p 10001:10001 \
 -p 10002:10002 \
