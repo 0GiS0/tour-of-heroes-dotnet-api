@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using tour_of_heroes_api.Modesl;
 
 namespace tour_of_heroes_api.Models
 {
