@@ -8,6 +8,7 @@ using OpenTelemetry.Logs;
 using OpenTelemetry.Instrumentation.AspNetCore;
 using tour_of_heroes_api.Interfaces;
 using tour_of_heroes_api.Repositories;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +25,7 @@ builder.Services.AddSwaggerGen(c =>
 /********************************** Application Insights ****************************************/
 /************************************************************************************************/
 
-builder.Services.AddApplicationInsightsTelemetry(); //You need ApplicationInsights.ConnectionString in your appsettings.json
+// builder.Services.AddApplicationInsightsTelemetry(); //You need ApplicationInsights.ConnectionString in your appsettings.json
 
 /************************************************************************************************
 ********************************** Open Telemetry configuration *********************************
@@ -42,7 +43,7 @@ builder.Logging.AddOpenTelemetry(options =>
     resourceBuilder.AddService(serviceName);
     options.SetResourceBuilder(resourceBuilder);
 
-    // options.AddConsoleExporter();
+    options.AddConsoleExporter();
     options.AddOtlpExporter(); //This will, by default, send traces using gRPC to http://localhost:4317
 
 });
@@ -50,7 +51,7 @@ builder.Logging.AddOpenTelemetry(options =>
 builder.Services.AddHttpLogging(o => o.LoggingFields = HttpLoggingFields.All);
 
 builder.Services.AddOpenTelemetry()
-// .UseAzureMonitor() //https://learn.microsoft.com/es-es/azure/azure-monitor/app/opentelemetry-configuration?tabs=aspnetcore
+.UseAzureMonitor() //https://learn.microsoft.com/es-es/azure/azure-monitor/app/opentelemetry-configuration?tabs=aspnetcore
 .ConfigureResource(resource => resource.AddService(serviceName))
 .WithTracing(tracing =>
 {
@@ -61,7 +62,7 @@ builder.Services.AddOpenTelemetry()
     
     tracing.AddOtlpExporter();
 
-    // tracing.AddConsoleExporter();
+    tracing.AddConsoleExporter();
 
 })
 .WithMetrics(metrics =>
