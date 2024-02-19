@@ -20,6 +20,12 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
+/************************************************************************************************/
+/********************************** Application Insights ****************************************/
+/************************************************************************************************/
+
+builder.Services.AddApplicationInsightsTelemetry(); //You need ApplicationInsights.ConnectionString in your appsettings.json
+
 /************************************************************************************************
 ********************************** Open Telemetry configuration *********************************
 *********** https://grafana.com/grafana/dashboards/17706-asp-net-otel-metrics/ ******************
