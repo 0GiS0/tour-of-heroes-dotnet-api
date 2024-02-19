@@ -29,7 +29,7 @@
     <PackageReference Include="OpenTelemetry.Instrumentation.SqlClient" Version="1.6.0-beta.3" />
 
     <!-- Exporters -->
-    <PackageReference Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.0.0" />
+    <PackageReference Include="Azure.Monitor.OpenTelemetry.AspNetCore" Version="1.1.0" />
     <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.7.0" />    
     <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.7.0" />
     <PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.6.0-rc.1" />
