@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/dotnet:0-7.0
+FROM mcr.microsoft.com/devcontainers/dotnet:8.0
 
 # Install SQL Tools: SQLPackage and sqlcmd
 COPY mssql/installSQLtools.sh installSQLtools.sh

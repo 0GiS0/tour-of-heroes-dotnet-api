@@ -17,51 +17,70 @@
 				"workbench.colorTheme": "Visual Studio Light",
 				"mssql.connections": [
 					{
-						"server": "localhost,1433",
+						"server": "db,1433",
 						"database": "",
 						"authenticationType": "SqlLogin",
 						"user": "sa",
 						"password": "P@ssword",
 						"emptyPasswordInput": false,
 						"savePassword": false,
-						"profileName": "mssql-container"
+						"profileName": "mssql-container",
+						"trustServerCertificate": true
 					}
 				]
 			},
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
 				"ms-dotnettools.csharp",
+				"ms-dotnettools.csdevkit",
 				"ms-mssql.mssql",
 				"humao.rest-client",
-				"hashicorp.terraform"
+				"hashicorp.terraform",
+				"ms-azuretools.vscode-docker",
+				"redhat.vscode-yaml",
+				"GitHub.copilot",
+				"GitHub.copilot-chat"
 			]
 		}
 	},
 	"remoteEnv": {
-		"ConnectionStrings__DefaultConnection": "Server=localhost,1433;Initial Catalog=heroes;Persist Security Info=False;User ID=sa;Password=P@ssword;TrustServerCertificate=True"
+		"ConnectionStrings__DefaultConnection": "Server=db,1433;Initial Catalog=heroes;Persist Security Info=False;User ID=sa;Password=P@ssword;TrustServerCertificate=True"
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
-		5010
+		5010,
+		16686,
+		9090,
+		3000
 	],	
-	// "portsAttributes": {
-	// 	"5010": {
-	// 		"protocol": "http"
-	// 	}
-	// },
+	"portsAttributes": {
+		"5010": {
+			"protocol": "http",
+			"label": "Tour of Heroes API"			
+		},
+		"16686": {
+			"protocol": "http",
+			"label": "Jaeger UI"
+		},
+		"9090":{
+			"label": "Prometheus",
+			"protocol": "http"
+		},
+		"3000":{
+			"label": "Grafana",
+			"protocol": "http"
+		}
+	},
 	// postCreateCommand.sh parameters: $1=SA password, $2=dacpac path, $3=sql script(s) path
-	"postCreateCommand": "bash .devcontainer/mssql/postCreateCommand.sh 'P@ssword' './bin/Debug/' './.devcontainer/mssql/'",
+	"postCreateCommand": "dotnet dev-certs https --trust && bash .devcontainer/mssql/postCreateCommand.sh 'P@ssword' './bin/Debug/' './.devcontainer/mssql/'",	
 	"features": {
-		// "ghcr.io/devcontainers-contrib/features/curl-apt-get:1": {},
-		// "ghcr.io/devcontainers-contrib/features/terraform-asdf:2": {
-		// 	"version": "latest"
-		// },
-		// "ghcr.io/devcontainers-contrib/features/terrascan:1": {
-		// 	"version": "latest"
-		// },
-		// "ghcr.io/devcontainers/features/azure-cli:1": {
-		// 	"version": "latest"
-		// }
+		"ghcr.io/devcontainers-contrib/features/curl-apt-get:1": {},
+		"ghcr.io/devcontainers-contrib/features/terraform-asdf:2": {
+			"version": "latest"
+		},		
+		"ghcr.io/devcontainers/features/azure-cli:1": {
+			"version": "latest"
+		}
 	}
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"

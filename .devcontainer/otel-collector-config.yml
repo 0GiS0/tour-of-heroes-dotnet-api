@@ -1,0 +1,89 @@
+# https://opentelemetry.io/docs/collector/configuration/
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: "tour-of-heroes-api"
+          scrape_interval: 5s
+          static_configs:
+            - targets: ["app:5010"]
+        - job_name: "jaeger"
+          scrape_interval: 5s
+          static_configs:
+            - targets: ["jaeger:14269"]
+
+################################ Receivers ##################################################################################################
+#                                                                                                                                           #
+# postgresql riak wavefront webhookevent zookeeper couchdb jaeger vcenter windowsperfcounters journald solace                               #
+# collectd file azuremonitor nsxt apachespark awscloudwatch httpcheck memcached oracledb udplog chrony cloudflare expvar googlecloudspanner  #
+# podman_stats sqlquery tcplog snmp awsecscontainermetrics azureblob kafkametrics kubeletstats loki rabbitmq redis k8s_events k8sobjects     #
+# docker_stats influxdb iis opencensus otlpjsonfile purefb apache bigip syslog pulsar sqlserver nginx kafka mongodb windowseventlog          #
+# awscontainerinsightreceiver elasticsearch filelog aerospike awsxray filestats hostmetrics skywalking azureeventhub carbon mysql            #
+# receiver_creator sapm haproxy mongodbatlas snowflake sshcheck statsd k8s_cluster prometheus cloudfoundry flinkmetrics jmx signalfx         #
+# prometheus_simple otlp awsfirehose fluentforward googlecloudpubsub purefa splunk_hec zipkin active_directory_ds datadog                    #
+#                                                                                                                                            #
+##############################################################################################################################################
+
+# Exporters send data to one or more backends or destinations
+exporters:
+  debug:
+    verbosity: detailed
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+  otlp:
+    endpoint: "jaeger:4317"
+    tls:
+      insecure: true
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+  azuremonitor:
+    connection_string: "InstrumentationKey=69fe3e46-bba9-4142-8e2e-bc071e29f4ab;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/"
+
+############################# Exporters #######################################################################################################
+#                                                                                                                                             #
+# prometheus otlp alibabacloud_logservice azuredataexplorer carbon clickhouse logicmonitor mezmo debug logging awsemf loadbalancing           #
+# syslog dataset file googlemanagedprometheus influxdb signalfx sumologic cassandra dynatrace googlecloud logzio pulsar otlphttp awsxray      #
+# elasticsearch honeycombmarker kafka sentry zipkin awscloudwatchlogs instana loki skywalking splunk_hec awskinesis awss3 azuremonitor        #
+# datadog f5cloud googlecloudpubsub prometheusremotewrite tanzuobservability tencentcloud_logservice coralogix opencensus sapm                #
+#                                                                                                                                             #
+###############################################################################################################################################
+
+# A connector acts as an exporter to one pipeline and a receiver to another
+# connectors:
+#   spanmetrics:
+#     histogram:
+#       explicit:
+#         buckets: [ 5ms, 10ms, 25ms, 50ms, 100ms, 250ms, 500ms, 1000ms ]
+
+# Processors are used to transform data
+# https://opentelemetry.io/docs/collector/transforming-telemetry/
+processors:
+  resource:
+    attributes:
+      - action: insert
+        key: service_name
+        from_attribute: service.name
+      - action: insert
+        key: loki.resource.labels
+        value: service_name
+      - action: insert
+        key: hello
+        value: hello world 👋🏻
+
+# Service pipelines define the flow of data through the collector
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [debug, otlp, azuremonitor]
+    metrics:
+      receivers: [prometheus]
+      exporters: [debug, prometheus, azuremonitor]
+    logs:
+      receivers: [otlp]
+      processors: [resource]
+      exporters: [debug, loki, azuremonitor]
