@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using tour_of_heroes_api.Models;
+using tour_of_heroes_api.Interfaces;
+
 using System.Linq;
 
 public class HeroRepository : IHeroRepository

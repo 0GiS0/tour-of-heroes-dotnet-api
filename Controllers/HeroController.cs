@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using tour_of_heroes_api.Models;
 using System.Linq;
+
+using tour_of_heroes_api.Interfaces;
+using tour_of_heroes_api.Models;
+
 
 namespace tour_of_heroes_api.Controllers
 {

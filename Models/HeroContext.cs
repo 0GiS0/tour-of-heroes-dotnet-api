@@ -9,5 +9,6 @@ namespace tour_of_heroes_api.Models
             Database.EnsureCreated();
         }
         public DbSet<Hero> Heroes { get; set; }
+        public DbSet<Villain> Villains { get; set; }
     }
 }

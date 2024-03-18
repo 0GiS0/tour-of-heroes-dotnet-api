@@ -3,6 +3,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using tour_of_heroes_api.Models;
+using tour_of_heroes_api.Interfaces;
 using Microsoft.AspNetCore.HttpLogging;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Instrumentation.AspNetCore;
@@ -12,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<IHeroRepository, HeroRepository>();
+builder.Services.AddScoped<IVillainRepository, VillainRepository>();
 builder.Services.AddControllers(); builder.Services.AddDbContext<HeroContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddSwaggerGen(c =>
 {

@@ -1,5 +1,6 @@
-using System.Collections.Generic;
 using tour_of_heroes_api.Models;
+
+namespace tour_of_heroes_api.Interfaces;
 
 /// <summary>
 /// Represents a repository for managing heroes.
