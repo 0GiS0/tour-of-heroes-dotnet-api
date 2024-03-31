@@ -13,6 +13,9 @@ metadata:
     - url: https://api.heroes.com
       title: Production
       icon: globe
+  annotations:
+    # this could also be `url:<url>` if the documentation isn't in the same location
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: service
   lifecycle: production
