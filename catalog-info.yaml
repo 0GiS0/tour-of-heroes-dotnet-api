@@ -1,0 +1,22 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: heroes-api
+  description: Heroes API is a RESTful API that provides manages heroes.
+  tags:
+    - dotnet
+    - data
+  links:
+    - url: https://github.com/0GiS0/tour-of-heroes-dotnet-api
+      title: Source Code
+      icon: github
+    - url: https://api.heroes.com
+      title: Production
+      icon: globe
+spec:
+  type: service
+  lifecycle: production
+  owner: 0GiS0
+  system: tour-of-heroes
+  dependsOn: ['resource:heroes-db']
+  apiConsumedBy: ['component:www-heroes']

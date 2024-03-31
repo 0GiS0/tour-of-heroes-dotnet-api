@@ -1,0 +1,15 @@
+site_name: Tour of Heroes
+site_description: Tour of Heroes is a sample application that helps a fictional organization manage heroes.
+site_author: 0GiS0
+site_url: https://tour-of-heroes.es
+repo_url: https://github.com/0GiS0/tour-of-heroes-dotnet-api
+edit_uri: edit/main/docs
+
+plugins: 
+  - techdocs-core
+
+nav:
+  - Home: index.md
+  - Management: managing-heroes.md
+    
+    
