@@ -1,5 +1,5 @@
 apiVersion: backstage.io/v1alpha1
-kind: Component
+kind: API
 metadata:
   name: heroes-api
   description: Heroes API is a RESTful API that provides manages heroes.
@@ -17,9 +17,155 @@ metadata:
     # this could also be `url:<url>` if the documentation isn't in the same location
     backstage.io/techdocs-ref: dir:.
 spec:
-  type: service
+  type: openai
   lifecycle: production
   owner: 0GiS0
   system: tour-of-heroes
   dependsOn: ['resource:heroes-db']
   apiConsumedBy: ['component:www-heroes']
+  definition: |
+    openapi: 3.0.1
+    info:
+      title: tour_of_heroes_api
+      version: v1
+    paths:
+      /api/Health:
+        get:
+          tags:
+            - Health
+          responses:
+            '200':
+              description: Success
+      /api/Hero:
+        get:
+          tags:
+            - Hero
+          responses:
+            '200':
+              description: Success
+              content:
+                text/plain:
+                  schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Hero'
+                application/json:
+                  schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Hero'
+                text/json:
+                  schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Hero'
+        post:
+          tags:
+            - Hero
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Hero'
+              text/json:
+                schema:
+                  $ref: '#/components/schemas/Hero'
+              application/*+json:
+                schema:
+                  $ref: '#/components/schemas/Hero'
+          responses:
+            '200':
+              description: Success
+              content:
+                text/plain:
+                  schema:
+                    $ref: '#/components/schemas/Hero'
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Hero'
+                text/json:
+                  schema:
+                    $ref: '#/components/schemas/Hero'
+      /api/Hero/{id}:
+        get:
+          tags:
+            - Hero
+          parameters:
+            - name: id
+              in: path
+              required: true
+              schema:
+                type: integer
+                format: int32
+          responses:
+            '200':
+              description: Success
+              content:
+                text/plain:
+                  schema:
+                    $ref: '#/components/schemas/Hero'
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Hero'
+                text/json:
+                  schema:
+                    $ref: '#/components/schemas/Hero'
+        put:
+          tags:
+            - Hero
+          parameters:
+            - name: id
+              in: path
+              required: true
+              schema:
+                type: integer
+                format: int32
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Hero'
+              text/json:
+                schema:
+                  $ref: '#/components/schemas/Hero'
+              application/*+json:
+                schema:
+                  $ref: '#/components/schemas/Hero'
+          responses:
+            '200':
+              description: Success
+        delete:
+          tags:
+            - Hero
+          parameters:
+            - name: id
+              in: path
+              required: true
+              schema:
+                type: integer
+                format: int32
+          responses:
+            '200':
+              description: Success
+    components:
+      schemas:
+        Hero:
+          required:
+            - alterEgo
+            - name
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int32
+            name:
+              minLength: 1
+              type: string
+            alterEgo:
+              minLength: 1
+              type: string
+            description:
+              type: string
+              nullable: true
+          additionalProperties: false
+    
