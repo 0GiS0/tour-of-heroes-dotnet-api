@@ -20,7 +20,7 @@ metadata:
 spec:
   type: openai
   lifecycle: production
-  owner: guests
+  owner: user:0GiS0
   system: tour-of-heroes
   dependsOn: ['resource:heroes-db']
   apiConsumedBy: ['component:www-heroes']
