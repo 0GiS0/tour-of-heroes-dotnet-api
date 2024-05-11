@@ -15,7 +15,7 @@ jobs:
     env:
       ENTITY_NAMESPACE: "default"
       ENTITY_KIND: "api"
-      ENTITY_NAME: "heroes-api"
+      ENTITY_NAME: "heroes-dotnet-api"
 
     steps:
       - uses: actions/checkout@v4
