@@ -32,7 +32,9 @@ jobs:
         run: techdocs-cli generate --no-docker --verbose
       - name: Publish documentation on Azure Blob Storage
         run: |
-          techdocs-cli publish --publisher-type azureBlobStorage \
+          techdocs-cli publish \
+          --entity $ENTITY_NAMESPACE/$ENTITY_KIND/$ENTITY_NAME \
+          --publisher-type azureBlobStorage \
           --azureAccountName ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} \
           --azureAccountKey ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }} \
           --storage-name ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }} \
