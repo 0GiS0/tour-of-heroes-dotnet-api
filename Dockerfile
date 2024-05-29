@@ -10,7 +10,7 @@ ENV OTEL_SERVICE_NAME=tour-of-heroes-api
 RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
 USER appuser
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0.203 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0.301 AS build
 
 ARG TARGETARCH
 ARG TARGETOS
