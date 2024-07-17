@@ -30,7 +30,8 @@ services:
     image: jaegertracing/all-in-one:latest
     ports:
       - "16686:16686" # Jaeger UI
-    command: --query.ui-config=/etc/jaeger/jaeger-ui.json --collector.otlp.enabled=true --prometheus.server-url=http://prometheus:9090 --prometheus.query.support-spanmetrics-connector=true
+    # command: --query.ui-config=/etc/jaeger/jaeger-ui.json --collector.otlp.enabled=true --prometheus.server-url=http://prometheus:9090 --prometheus.query.support-spanmetrics-connector=true
+    command: --query.ui-config=/etc/jaeger/jaeger-ui.json --collector.otlp.enabled=true --prometheus.server-url=http://prometheus:9090 
     environment:      
       METRICS_STORAGE_TYPE: "prometheus"      
       PROMETHEUS_QUERY_NORMALIZE_CALLS: true
