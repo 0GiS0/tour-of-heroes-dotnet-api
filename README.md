@@ -1,16 +1,21 @@
-# Aplicación de ejemplo en Angular: Tour Of Heroes
+# Tour of heroes API in .NET
 
-Este proyecto es una implementación de una API en .NET para el fronted del [tutorial de AngularJS](https://angular.io/tutorial), que cuando finaliza lo hace generando la API en memoria. Esta se apoya en una base de datos SQL Server que puedes generar usando Docker:
+![Tour of Heroes](docs/images/heroes%20by%20microsoft%20designer.jpeg)
 
-```
+This repository is an API in .NET for the AngularJS [Tour of Heroes tutorial](https://angular.io/tutorial), which when finished generates the API in memory. This one is supported by a SQL Server database that you can generate using Docker:
+
+```bash
 docker run \
 -e 'ACCEPT_EULA=Y' \
 -e 'SA_PASSWORD=Password1!' \
 -e 'MSSQL_PID=Express' \
 --name sqlserver \
 -p 1433:1433 -d mcr.microsoft.com/mssql/server:latest
+```
 
-#O si tienes un Apple M1
+Or if you have a Mac with an ARM chip, you can use the following command:
+
+```bash
 docker run \
 --name azuresqledge \
 --network sqlserver-vnet \
@@ -20,11 +25,13 @@ docker run \
 -d mcr.microsoft.com/azure-sql-edge
 ```
 
-Tienes los pasos en el archivo [create-local-database.sh](https://github.com/0GiS0/tour-of-heroes-dotnet-api/blob/main/create-local-database.sh)
+You have the steps in the file [create-local-database.sh](create-local-database.sh)
 
-Si no hay otro archivo, la configuración de la base de datos la coge del llamado [appsettings.json](https://github.com/0GiS0/tour-of-heroes-dotnet-api/blob/main/appsettings.json) pero debes de tener cuidado de subir información sensible a este, por lo que es buena práctica crearse en local uno llamado **appsettings.Development.json** que el proyecto de .NET sabrá reconocer, lo utilizará en su lugar y no se subirá a GitHub. Este debe tener la siguiente forma (al igual que el de appsettings.json):
+## Configuration
 
-```
+If there is no other file, the database configuration is taken from the so-called [appsettings.json](appsettings.json) but you must be careful not to upload sensitive information to this, so it is good practice to create a local one called **appsettings.Development.json** that the .NET project will recognize, use it instead and will not be uploaded to GitHub. 
+
+```json
 {
     "ConnectionStrings": {
         "DefaultConnection": "Server=localhost,1433;Initial Catalog=heroes;Persist Security Info=False;User ID=sa;Password=Password1!;"
@@ -40,18 +47,16 @@ Si no hay otro archivo, la configuración de la base de datos la coge del llamad
 }
 ```
 
-## Cómo lo ejecuto
+## How to run the project
 
-Si estás en Visual Studio Code, o Visual Studio 2019/2022, puedes ejecutar el proyecto simplemente pulsando F5.
+If you are using Visual Studio Code, you can run the project by pressing `F5`. If you are using any other method you can launch it by running the following command:
 
-Si estás usando cualquier otro método puedes lanzarlo ejecutando el siguiente comando:
-
-```
+```bash
 dotnet run
 ```
 
-El proceso arrancará y estará disponible en esta dirección: [https://localhost:5001/api/hero](https://localhost:5001/api/hero).
+The project will be available at [http://localhost:5000](http://localhost:5000) and the Swagger documentation at [http://localhost:5000/swagger](http://localhost:5000/swagger)
 
-## Cómo añadir héroes
+## How to add heroes
 
-La primera vez que lo ejecutes no verás ni un solo heroe. Para ayudarte en esta tarea, puedes instalar en Visual Studio Code la extensión [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) y ejecutar las peticiones del archivo [client.http](https://github.com/0GiS0/tour-of-heroes-dotnet-api/blob/main/client.http)
+The first time you run the project, the database will be created but no heroes will be added. You can add them using the file called [client.http](client.http) that is in the root of the project. You can use the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension for Visual Studio Code to run the requests.
