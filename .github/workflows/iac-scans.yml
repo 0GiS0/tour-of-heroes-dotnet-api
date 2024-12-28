@@ -21,27 +21,27 @@ jobs:
       security-events: write
     uses: 0GiS0/scan-tf-vulnerabilities/.github/workflows/checkov.yaml@main
     with:
-      working-directory: terraform
+      working-directory: infrastructure
   trivy:
     permissions:
       contents: read
       security-events: write
     uses: 0GiS0/scan-tf-vulnerabilities/.github/workflows/trivy.yaml@main
     with:
-      working-directory: terraform
+      working-directory: infrastructure
   terrascan:
     permissions:
       contents: read
       security-events: write
     uses: 0GiS0/scan-tf-vulnerabilities/.github/workflows/terrascan.yaml@main
     with:
-      working-directory: terraform
+      working-directory: infrastructure
   snyk:
     permissions:
       contents: read
       security-events: write
     uses: 0GiS0/scan-tf-vulnerabilities/.github/workflows/snyk.yaml@main
     with:
-      working-directory: terraform
+      working-directory: infrastructure
     secrets:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}

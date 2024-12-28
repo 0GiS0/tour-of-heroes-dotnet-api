@@ -468,3 +468,4 @@ terraform/.terraform/providers/registry.terraform.io/hashicorp/azurerm/3.47.0/li
 terraform/.terraform/terraform.tfstate
 
 *.sln
+testsqlconnection.sql
