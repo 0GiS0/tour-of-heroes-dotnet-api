@@ -1,8 +1,11 @@
-name: GitHub Packages demo
+name: 🐳📦 GitHub Packages demo
 
 on:
   push:
     branches: [main]
+    paths:
+      - "src/**"
+      - "build/docker/**"
 
 jobs:
   build:   
@@ -26,8 +29,8 @@ jobs:
         run: echo ::set-output name=tag::$(echo ${GITHUB_SHA::7})
       - uses: docker/build-push-action@v6
         with:         
-          context: .
-          # platforms: linux/amd64,linux/arm64 https://github.com/dotnet/core/blob/main/release-notes/7.0/supported-os.md#qemu https://github.com/NuGet/Home/issues/12227 https://github.com/dotnet/sdk/issues/28971
-          platforms: linux/amd64
+          context: src
+          file: build/docker/Dockerfile          
+          platforms: linux/amd64, linux/arm64
           push: true
           tags: ghcr.io/0gis0/tour-of-heroes-dotnet-api/tour-of-heroes-api:${{ steps.vars.outputs.tag }}

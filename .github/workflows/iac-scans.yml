@@ -1,17 +1,19 @@
-name: IaC scans
+name: 🏗️🔎 IaC scans
 
 on:
   push:
-    branches: ["main" ]
-    paths: terraform
+    branches: ["main"]
+    paths:
+      - "infrastructure/**"
   pull_request:
     branches: ["main"]
-    paths: terraform
+    paths:
+      - "infrastructure/**"
   workflow_dispatch:
 
 permissions:
   contents: read
-  
+
 jobs:
   checkov:
     permissions:

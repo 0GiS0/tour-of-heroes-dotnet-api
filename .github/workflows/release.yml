@@ -1,4 +1,4 @@
-name: Generate .NET release
+name: 📦 Generate .NET release
 
 on:
   push:

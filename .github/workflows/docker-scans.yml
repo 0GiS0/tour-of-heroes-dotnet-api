@@ -1,11 +1,10 @@
-name: Docker scans
+name: 🐳🔎 Docker scans
 
 on:
   push:
     branches:
       - main
-    paths-ignore:
-      - ".ado/**"
+    paths-ignore:      
       - "README.md"
   workflow_dispatch:
 

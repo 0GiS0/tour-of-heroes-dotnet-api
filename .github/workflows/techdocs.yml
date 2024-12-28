@@ -1,4 +1,4 @@
-name: Generate documentation for Backstage
+name: 📄 Generate documentation for Backstage
 
 on:
   push:
