@@ -25,7 +25,15 @@ jobs:
           dotnet-version: 8.x
       - name: Restore dependencies
         run: dotnet restore
+      
       - name: Build
         run: dotnet build --no-restore
+      
       - name: Test
         run: dotnet test --no-build --verbosity normal
+      
+      - name: Install coverlet
+        run: dotnet tool install --global coverlet.console
+      
+      - name: Run tests with coverage
+        run: dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura

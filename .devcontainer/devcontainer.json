@@ -39,7 +39,8 @@
 				"ms-azuretools.vscode-docker",
 				"redhat.vscode-yaml",
 				"GitHub.copilot",
-				"GitHub.copilot-chat"
+				"GitHub.copilot-chat",
+				"redhat.vscode-xml"
 			]
 		}
 	},
