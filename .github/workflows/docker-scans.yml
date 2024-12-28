@@ -16,7 +16,7 @@ jobs:
       security-events: write
     uses: 0GiS0/scan-docker-vulnerabilities/.github/workflows/checkov.yaml@main
     with:
-      dockerfile_path: src/Dockerfile
+      dockerfile_path: build/docker/Dockerfile
 
   trivy:
     permissions:
@@ -24,7 +24,7 @@ jobs:
       security-events: write
     uses: 0GiS0/scan-docker-vulnerabilities/.github/workflows/trivy.yaml@main
     with:
-      dockerfile_path: src/Dockerfile
+      dockerfile_path: build/docker/Dockerfile
       context: ./src  
 
   grype:
@@ -33,7 +33,7 @@ jobs:
       security-events: write
     uses: 0GiS0/scan-docker-vulnerabilities/.github/workflows/grype.yaml@main
     with:
-      dockerfile_path: src/Dockerfile
+      dockerfile_path: build/docker/Dockerfile
       context: ./src
 
   snyk:
@@ -42,7 +42,7 @@ jobs:
       security-events: write
     uses: 0GiS0/scan-docker-vulnerabilities/.github/workflows/snyk.yaml@main
     with:
-      dockerfile_path: src/Dockerfile
+      dockerfile_path: build/docker/Dockerfile
       context: ./src
 
     secrets:
