@@ -467,5 +467,4 @@ terraform/terraform.tfstate.backup
 terraform/.terraform/providers/registry.terraform.io/hashicorp/azurerm/3.47.0/linux_amd64/terraform-provider-azurerm_v3.47.0_x5
 terraform/.terraform/terraform.tfstate
 
-*.sln
 testsqlconnection.sql

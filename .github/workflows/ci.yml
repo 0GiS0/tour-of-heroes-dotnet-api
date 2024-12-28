@@ -10,10 +10,6 @@ on:
     paths:
       - "src/**"
 
-defaults:
-  run:
-    working-directory: src
-
 jobs:
   build:   
     runs-on: ubuntu-latest
