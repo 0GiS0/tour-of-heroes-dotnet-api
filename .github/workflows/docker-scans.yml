@@ -6,6 +6,7 @@ on:
       - main
     paths-ignore:      
       - "README.md"
+      - "tests/**"
   workflow_dispatch:
 
 jobs:
@@ -14,20 +15,35 @@ jobs:
       contents: read
       security-events: write
     uses: 0GiS0/scan-docker-vulnerabilities/.github/workflows/checkov.yaml@main
+    with:
+      dockerfile_path: src/Dockerfile
+
   trivy:
     permissions:
       contents: read
       security-events: write
     uses: 0GiS0/scan-docker-vulnerabilities/.github/workflows/trivy.yaml@main
+    with:
+      dockerfile_path: src/Dockerfile
+      context: ./src  
+
   grype:
     permissions:
       contents: read
       security-events: write
     uses: 0GiS0/scan-docker-vulnerabilities/.github/workflows/grype.yaml@main
+    with:
+      dockerfile_path: src/Dockerfile
+      context: ./src
+
   snyk:
     permissions:
       contents: read
       security-events: write
     uses: 0GiS0/scan-docker-vulnerabilities/.github/workflows/snyk.yaml@main
+    with:
+      dockerfile_path: src/Dockerfile
+      context: ./src
+
     secrets:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
