@@ -1,0 +1,2 @@
+## Commit messages
+The key to a good commit is clarity and conciseness. If the commit is for a new feature should start with `feat: `, if it's for fixing a bug should start with `fix: `, if it's for performance improvements should start with `perf: `, if its for style or layout changes should start with `style: `, for minimum changes with no significant impact `chore: ` and for documentation `docs: `. The most important thing it to keep the messages clear and precise so that everyone working on the project can quickly understand the changes made.
