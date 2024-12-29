@@ -1,19 +1,20 @@
-using System.Collections.Generic;
 using Moq;
-using Xunit;
 using tour_of_heroes_api.Controllers;
 using tour_of_heroes_api.Models;
 using Microsoft.AspNetCore.Mvc;
 
 public class HeroControllerTests
 {
-    private readonly Mock<IHeroRepository> _mockRepo;
+    /// <summary>
+    /// Mock repository for the IHeroRepository interface used for testing purposes.
+    /// </summary>
+    private readonly Mock<IHeroRepository> _mockHeroRepository;
     private readonly HeroController _controller;
 
     public HeroControllerTests()
     {
-        _mockRepo = new Mock<IHeroRepository>();
-        _controller = new HeroController(_mockRepo.Object);
+        _mockHeroRepository = new Mock<IHeroRepository>();
+        _controller = new HeroController(_mockHeroRepository.Object);
     }
 
     [Fact]
@@ -25,7 +26,7 @@ public class HeroControllerTests
             new Hero("Superman", "Clark Kent"),
             new Hero("Batman", "Bruce Wayne")
         };
-        _mockRepo.Setup(repo => repo.GetAll()).Returns(heroes);
+        _mockHeroRepository.Setup(repo => repo.GetAll()).Returns(heroes);
 
         // Act
         var result = _controller.GetHeroes();
@@ -41,7 +42,7 @@ public class HeroControllerTests
     {
         // Arrange
         var hero = new Hero("Superman", "Clark Kent");
-        _mockRepo.Setup(repo => repo.GetById(1)).Returns(hero);
+        _mockHeroRepository.Setup(repo => repo.GetById(1)).Returns(hero);
 
         // Act
         var result = _controller.GetHero(1);
@@ -56,7 +57,7 @@ public class HeroControllerTests
     public void GetHero_ReturnsNotFoundResult_WhenHeroNotFound()
     {
         // Arrange
-        _mockRepo.Setup(repo => repo.GetById(1)).Returns((Hero)null);
+        _mockHeroRepository.Setup(repo => repo.GetById(1)).Returns((Hero)null);
 
         // Act
         var result = _controller.GetHero(1);
@@ -85,7 +86,7 @@ public class HeroControllerTests
     {
         // Arrange
         var hero = new Hero("Superman", "Clark Kent");
-        _mockRepo.Setup(repo => repo.GetById(1)).Returns(hero);
+        _mockHeroRepository.Setup(repo => repo.GetById(1)).Returns(hero);
 
         // Act
         var result = _controller.PutHero(1, new Hero("Batman", "Bruce Wayne"));
@@ -98,7 +99,7 @@ public class HeroControllerTests
     public void PutHero_ReturnsNotFoundResult_WhenHeroNotFound()
     {
         // Arrange
-        _mockRepo.Setup(repo => repo.GetById(1)).Returns((Hero)null);
+        _mockHeroRepository.Setup(repo => repo.GetById(1)).Returns((Hero)null);
 
         // Act
         var result = _controller.PutHero(1, new Hero("Batman", "Bruce Wayne"));
@@ -112,7 +113,7 @@ public class HeroControllerTests
     {
         // Arrange
         var hero = new Hero("Superman", "Clark Kent");
-        _mockRepo.Setup(repo => repo.GetById(1)).Returns(hero);
+        _mockHeroRepository.Setup(repo => repo.GetById(1)).Returns(hero);
 
         // Act
         var result = _controller.DeleteHero(1);
