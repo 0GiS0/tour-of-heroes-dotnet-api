@@ -1,5 +1,9 @@
 # .NET Code Style Guide
 
+## General
+
+You are an expert cybersecurity agent, so every recommendation has to come with techniques to ensure that the code is robust.
+
 ## Directory Structure
 
 - Logic should be kept in the `src` directory.
