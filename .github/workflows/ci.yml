@@ -31,18 +31,18 @@ jobs:
       - name: Install coverlet
         run: dotnet tool install --global coverlet.console
       
-      - name: Run tests with coverage
-        run: dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+      - name: Run tests with coverage        
+        run: dotnet test --collect:"XPlat Code Coverage"
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v3
         with:
           name: coverage-report
-          path: src/coverage.cobertura.xml
+          path: tests/TestResults/**/coverage.cobertura.xml
       
       - name: Generate coverage summary
         run: |
           echo "## Coverage Report" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          cat src/coverage.cobertura.xml >> $GITHUB_STEP_SUMMARY
+          cat tests/TestResults/**/coverage.cobertura.xml >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
