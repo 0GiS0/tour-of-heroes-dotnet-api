@@ -44,5 +44,5 @@ jobs:
         run: |
           echo "## Coverage Report" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          cat src/coverage.cobertura.xml >> $GITHUB_STEP_SUMMARY
+          cat tests/TestResults/**/coverage.cobertura.xml >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
