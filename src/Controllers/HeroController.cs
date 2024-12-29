@@ -67,11 +67,21 @@ namespace tour_of_heroes_api.Controllers
         [HttpPost]
         public ActionResult<Hero> PostHero(Hero hero)
         {
+            if (hero == null)
+            {
+                return BadRequest("Hero cannot be null.");
+            }
 
-            _heroRepository.Add(hero);
-
-            return Ok(hero);
-
+            try
+            {
+                _heroRepository.Add(hero);
+                return CreatedAtAction(nameof(GetHero), new { id = hero.Id }, hero);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (ex) here if necessary
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         // DELETE: api/Hero/5
