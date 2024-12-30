@@ -1,8 +1,5 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using tour_of_heroes_api.Models;
-using System.Linq;
 
 namespace tour_of_heroes_api.Controllers
 {
@@ -67,21 +64,8 @@ namespace tour_of_heroes_api.Controllers
         [HttpPost]
         public ActionResult<Hero> PostHero(Hero hero)
         {
-            if (hero == null)
-            {
-                return BadRequest("Hero cannot be null.");
-            }
-
-            try
-            {
-                _heroRepository.Add(hero);
-                return CreatedAtAction(nameof(GetHero), new { id = hero.Id }, hero);
-            }
-            catch (Exception ex)
-            {
-                // Log the exception (ex) here if necessary
-                return StatusCode(500, "Internal server error");
-            }
+            _heroRepository.Add(hero);
+            return Ok(hero);
         }
 
         // DELETE: api/Hero/5
