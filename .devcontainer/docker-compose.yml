@@ -49,7 +49,7 @@ services:
   
   loki:
     image: grafana/loki:latest
-    command: -config.file=/mnt/config/loki-config.yml
+    command: -config.file=/mnt/config/loki-config.yml -config.expand-env=true
     ports:
       - "3100:3100"
     networks:

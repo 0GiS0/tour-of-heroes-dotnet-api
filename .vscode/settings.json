@@ -18,7 +18,7 @@
       "text": "Add emoji at the end of the message."
     },
     {
-      "file": "docs/code-style copy.md"
+      "file": "docs/commit-style.md"
     }
   ],
   "github.copilot.chat.testGeneration.instructions": [
