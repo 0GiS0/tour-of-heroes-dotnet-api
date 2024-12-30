@@ -39,7 +39,8 @@
   "github.copilot.chat.reviewSelection.enabled": true,
   "github.copilot.chat.reviewSelection.instructions": [
     {
-      "text": "Always add a comment: 'This review was selected by GitHub Copilot 🤖'"
+      "text": "Always add a comment: 'This review was made by GitHub Copilot 🤖'",
+      "language": "all"
     }
   ],
   "github.copilot.chat.generateTests.codeLens": true
