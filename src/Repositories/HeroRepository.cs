@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using tour_of_heroes_api.Models;
-using System.Linq;
 
 public class HeroRepository : IHeroRepository
 {
@@ -14,16 +12,6 @@ public class HeroRepository : IHeroRepository
     public void Add(Hero hero)
     {
         _context.Heroes.Add(hero);
-        _context.SaveChanges();
-    }
-
-    public void Delete(int id)
-    {
-        var hero = GetById(id);
-
-        if (hero == null) return;        
-
-        _context.Heroes.Remove(hero);
         _context.SaveChanges();
     }
 

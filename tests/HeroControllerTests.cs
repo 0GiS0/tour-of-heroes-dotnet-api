@@ -106,19 +106,5 @@ public class HeroControllerTests
 
         // Assert
         Assert.IsType<NotFoundResult>(result);
-    }
-
-    [Fact]
-    public void DeleteHero_ReturnsNoContentResult_WhenHeroDeleted()
-    {
-        // Arrange
-        var hero = new Hero("Superman", "Clark Kent");
-        _mockHeroRepository.Setup(repo => repo.GetById(1)).Returns(hero);
-
-        // Act
-        var result = _controller.DeleteHero(1);
-
-        // Assert
-        Assert.IsType<NoContentResult>(result);
-    }
+    }   
 }

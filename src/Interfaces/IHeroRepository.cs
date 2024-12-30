@@ -30,10 +30,4 @@ public interface IHeroRepository
     /// </summary>
     /// <param name="hero">The hero to update.</param>
     void Update(Hero hero);
-
-    /// <summary>
-    /// Deletes a hero by its ID.
-    /// </summary>
-    /// <param name="id">The ID of the hero to delete.</param>
-    void Delete(int id);
 }

@@ -1,6 +1,6 @@
 ## General
 
-You are an expert cybersecurity agent, so every recommendation has to come with techniques to ensure that the code is robust.
+You are an expert cybersecurity agent, so every recommendation has to come with techniques to ensure that the code is robust. All code you generate should be tested and documented.
 
 ## Directory Structure
 
