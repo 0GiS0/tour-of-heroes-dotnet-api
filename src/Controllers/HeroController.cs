@@ -59,14 +59,6 @@ namespace tour_of_heroes_api.Controllers
 
         }
 
-        // POST: api/Hero
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public ActionResult<Hero> PostHero(Hero hero)
-        {
-            _heroRepository.Add(hero);
-            return Ok(hero);
-        }
 
         // DELETE: api/Hero/5
         [HttpDelete("{id}")]
