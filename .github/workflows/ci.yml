@@ -1,4 +1,4 @@
-name: ⚙️ CI
+name: ⚙️ Continuous Integration
 
 on:
   push:
@@ -38,23 +38,23 @@ jobs:
       - name: ReportGenerator
         uses: danielpalme/ReportGenerator-GitHub-Action@5.4.3
         with:
-          reports: 'tests/TestResults/**/coverage.cobertura.xml' # REQUIRED # The coverage reports that should be parsed (separated by semicolon). Globbing is supported.
-          targetdir: 'coveragereport' # REQUIRED # The directory where the generated report should be saved.
-          reporttypes: 'MarkdownSummaryGithub;Badges' # The output formats and scope (separated by semicolon) Values: Badges, Clover, Cobertura, OpenCover, CsvSummary, Html, Html_Dark, Html_Light, Html_BlueRed, HtmlChart, HtmlInline, HtmlInline_AzurePipelines, HtmlInline_AzurePipelines_Dark, HtmlInline_AzurePipelines_Light, HtmlSummary, Html_BlueRed_Summary, JsonSummary, CodeClimate, Latex, LatexSummary, lcov, MarkdownSummary, MarkdownAssembliesSummary, MarkdownSummaryGithub, MarkdownDeltaSummary, MHtml, SvgChart, SonarQube, TeamCitySummary, TextSummary, TextDeltaSummary, Xml, XmlSummary
+          reports: 'tests/TestResults/**/coverage.cobertura.xml' 
+          targetdir: 'coveragereport' 
+          reporttypes: 'MarkdownSummaryGithub;Badges'
       
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
         with:
-          name: CoverageReport # Artifact name        
-          path: coveragereport # Directory containing files to upload
+          name: CoverageReport 
+          path: coveragereport 
 
-      - name: Add comment to PR # Only applicable if 'MarkdownSummaryGithub' or one of the other Markdown report types is generated
+      - name: Add comment to PR 
         if: github.event_name == 'pull_request'
-        run: gh pr comment $PR_NUMBER --body-file coveragereport/SummaryGithub.md # Adjust path and filename if necessary
+        run: gh pr comment $PR_NUMBER --body-file coveragereport/SummaryGithub.md 
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.number }}
           
-      - name: Publish coverage in build summary # Only applicable if 'MarkdownSummaryGithub' or one of the other Markdown report types is generated
+      - name: Publish coverage in build summary
         run: cat coveragereport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY # Adjust path and filename if necessary
         shell: bash
