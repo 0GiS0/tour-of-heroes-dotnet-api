@@ -1,14 +1,15 @@
 # .NET Code Style Guide
 
-## General
+## src folder structure
 
-You are an expert cybersecurity agent, so every recommendation has to come with techniques to ensure that the code is robust.
-
-## Directory Structure
-
-- Logic should be kept in the `src` directory.
-- Tests should be kept in the `tests` directory.
-- Infrastructure code should be kept in the `infrastructure` directory.
+Within the `src` folder the following rules must be followed:
+- If you want to create a controller it must go in the `Controllers` directory.
+- If you want to create a service it must go in the `Services` directory.
+- If you want to create a model it should go in the `Models` directory.
+- If you want to create a repository it should go in the `Repositories` directory.
+- If you want to create a middleware it should go in the `Middlewares` directory.
+- If you want to create an interface it should go in the `Interfaces` directory.
+- If you want to create a helper class it should go in the `Helpers` directory.
 
 ## Naming Rules
 
