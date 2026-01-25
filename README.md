@@ -252,6 +252,8 @@ volumes:
   postgres_data:
 ```
 
+> 📖 **Guía completa de pruebas Docker:** Ver [docs/DOCKER_TESTING.md](docs/DOCKER_TESTING.md) para instrucciones detalladas sobre cómo probar la imagen con diferentes proveedores de base de datos.
+
 ---
 
 ## 🏗️ Estructura del Proyecto
