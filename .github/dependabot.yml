@@ -37,11 +37,22 @@ updates:
       day: "monday"
       time: "09:00"
       timezone: "Europe/Madrid"
+    open-pull-requests-limit: 10
     labels:
       - "📦 dependencies"
       - "🧪 testing"
     commit-message:
       prefix: "chore(deps)"
+    groups:
+      microsoft:
+        patterns:
+          - "Microsoft.*"
+          - "System.*"
+      testing:
+        patterns:
+          - "xunit*"
+          - "Moq"
+          - "coverlet*"
 
   # GitHub Actions
   - package-ecosystem: "github-actions"
@@ -93,3 +104,5 @@ updates:
     labels:
       - "📦 dependencies"
       - "🔧 infrastructure"
+    commit-message:
+      prefix: "chore(devcontainer)"
