@@ -186,12 +186,25 @@ El proyecto incluye observabilidad completa con **OpenTelemetry**:
 ### Build de la imagen
 
 ```bash
-docker build -t tour-of-heroes-api -f build/docker/Dockerfile .
+# Desde el directorio raíz del proyecto
+docker build -t tour-of-heroes-api -f build/docker/Dockerfile src/
 ```
 
-### Ejecutar con SQL Server
+### Variables de entorno del contenedor
+
+El Dockerfile incluye las siguientes variables de entorno configuradas por defecto:
+
+| Variable | Valor por defecto | Descripción |
+|----------|-------------------|-------------|
+| `DATABASE_PROVIDER` | `SqlServer` | Proveedor de base de datos (`SqlServer` o `PostgreSQL`) |
+| `ASPNETCORE_URLS` | `http://+:8080` | URLs en las que escucha la aplicación |
+| `ASPNETCORE_ENVIRONMENT` | `Production` | Entorno de ejecución |
+| `OTEL_SERVICE_NAME` | `tour-of-heroes-api` | Nombre del servicio para OpenTelemetry |
+
+### Ejecutar con SQL Server (por defecto)
 
 ```bash
+# SQL Server es el proveedor por defecto, no es necesario especificar DATABASE_PROVIDER
 docker run -d \
   -p 8080:8080 \
   -e "ConnectionStrings__DefaultConnection=Server=host.docker.internal,1433;Database=heroes;User Id=sa;Password=YourPassword;TrustServerCertificate=True" \
@@ -201,12 +214,45 @@ docker run -d \
 ### Ejecutar con PostgreSQL
 
 ```bash
+# Especificar DATABASE_PROVIDER=PostgreSQL para usar PostgreSQL
 docker run -d \
   -p 8080:8080 \
   -e "DATABASE_PROVIDER=PostgreSQL" \
   -e "ConnectionStrings__PostgreSQL=Host=host.docker.internal;Database=heroes;Username=postgres;Password=YourPassword" \
   tour-of-heroes-api
 ```
+
+### Docker Compose ejemplo
+
+```yaml
+version: "3.8"
+services:
+  api:
+    build:
+      context: src
+      dockerfile: ../build/docker/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_PROVIDER=PostgreSQL
+      - ConnectionStrings__PostgreSQL=Host=postgres;Database=heroes;Username=postgres;Password=secret
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: heroes
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+```
+
+> 📖 **Guía completa de pruebas Docker:** Ver [docs/DOCKER_TESTING.md](docs/DOCKER_TESTING.md) para instrucciones detalladas sobre cómo probar la imagen con diferentes proveedores de base de datos.
 
 ---
 

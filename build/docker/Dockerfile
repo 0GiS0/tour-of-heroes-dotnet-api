@@ -1,9 +1,15 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
-EXPOSE 5000
+EXPOSE 8080
 
-ENV ASPNETCORE_URLS=http://+:5000
+# Environment variables
+ENV ASPNETCORE_URLS=http://+:8080
+ENV ASPNETCORE_ENVIRONMENT=Production
 ENV OTEL_SERVICE_NAME=tour-of-heroes-api
+
+# Database provider configuration
+# Supported values: SqlServer, PostgreSQL
+ENV DATABASE_PROVIDER=SqlServer
 
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder
 # For more info, please refer to https://aka.ms/vscode-docker-dotnet-configure-containers
@@ -43,7 +49,7 @@ USER root
 RUN apt-get update && apt-get install -y curl
 USER appuser
 
-HEALTHCHECK --interval=5m --timeout=3s \
-  CMD curl -f http://localhost:5000/api/health || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:8080/api/health || exit 1
 
 ENTRYPOINT ["dotnet", "tour-of-heroes-api.dll"]
