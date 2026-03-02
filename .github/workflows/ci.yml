@@ -39,7 +39,7 @@ jobs:
         run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage" --verbosity normal
 
       - name: 📊 Generate coverage report
-        uses: danielpalme/ReportGenerator-GitHub-Action@5.5.1
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.5.2
         with:
           reports: 'tests/TestResults/**/coverage.cobertura.xml' 
           targetdir: 'coveragereport' 
